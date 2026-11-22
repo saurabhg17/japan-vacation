@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Japan 2026 – Places Map</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+  :root { --ink:#1d2433; --muted:#6b7280; --line:#e5e7eb; --accent:#c8442f; --bg:#fff; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; height:100%; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; color:var(--ink); }
+  #map { position:absolute; inset:0; top:52px; }
+  header { position:absolute; top:0; left:0; right:0; height:52px; background:var(--bg); border-bottom:1px solid var(--line);
+           display:flex; align-items:center; gap:8px; padding:0 10px; z-index:1000; }
+  .seg { display:flex; border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+  .seg button { border:0; background:#fff; padding:8px 12px; font-size:14px; font-weight:600; color:var(--muted); }
+  .seg button.on { background:var(--ink); color:#fff; }
+  #listBtn { margin-left:auto; border:0; background:var(--accent); color:#fff; font-weight:600; font-size:14px; padding:8px 12px; border-radius:8px; }
+
+  /* markers */
+  .pin { display:flex; align-items:center; gap:4px; white-space:nowrap; transform:translate(-14px,-14px); }
+  .pin .ic { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+             font-size:15px; border:2px solid #fff; box-shadow:0 1px 4px rgba(0,0,0,.35); }
+  .pin .lb { font-size:12px; font-weight:600; background:rgba(255,255,255,.92); padding:1px 5px; border-radius:4px;
+             box-shadow:0 1px 2px rgba(0,0,0,.2); }
+  .pin.fixed .ic { width:32px; height:32px; border-radius:8px; font-size:17px; }
+  .pin.fixed .lb { background:var(--ink); color:#fff; }
+
+  /* popup */
+  .pop h3 { margin:0 0 2px; font-size:15px; }
+  .pop .t { color:var(--muted); font-size:12px; margin-bottom:6px; }
+  .pop table { border-collapse:collapse; font-size:12px; }
+  .pop td { padding:2px 6px 2px 0; vertical-align:top; }
+  .pop td:first-child { color:var(--muted); white-space:nowrap; }
+  .pop a.go { display:inline-block; margin-top:8px; background:#1a73e8; color:#fff; padding:6px 10px; border-radius:6px;
+              text-decoration:none; font-weight:600; font-size:12px; }
+
+  /* drawer */
+  #drawer { position:absolute; left:0; right:0; bottom:0; max-height:70%; background:#fff; z-index:1100;
+            border-radius:14px 14px 0 0; box-shadow:0 -4px 20px rgba(0,0,0,.2); transform:translateY(105%);
+            transition:transform .25s ease; display:flex; flex-direction:column; }
+  #drawer.open { transform:translateY(0); }
+  #drawer .top { display:flex; align-items:center; padding:12px 14px 8px; border-bottom:1px solid var(--line); gap:8px; }
+  #drawer .top b { font-size:16px; }
+  #drawer .top button { border:1px solid var(--line); background:#fff; border-radius:6px; padding:5px 9px; font-size:13px; }
+  #drawer .top .close { margin-left:auto; }
+  #list { overflow:auto; padding:4px 14px 20px; }
+  .grp { margin-top:10px; }
+  .grp h4 { margin:6px 0; font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted);
+            display:flex; justify-content:space-between; align-items:center; }
+  .grp h4 a { font-size:12px; color:var(--accent); text-transform:none; letter-spacing:0; cursor:pointer; }
+  label.row { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid #f3f4f6; font-size:14px; }
+  label.row input { width:20px; height:20px; accent-color:var(--accent); }
+  label.row .ic { width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; flex:none; }
+  label.row .ty { color:var(--muted); font-size:12px; margin-left:auto; text-align:right; }
+  #locate { position:absolute; right:10px; bottom:24px; z-index:1000; width:44px; height:44px; border-radius:50%;
+            border:0; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,.3); font-size:20px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="seg" id="seg">
+    <button data-city="Kyoto" class="on">Kyoto</button>
+    <button data-city="Tokyo">Tokyo</button>
+    <button data-city="Fuji">Fuji</button>
+  </div>
+  <button id="listBtn">Places</button>
+</header>
+<div id="map"></div>
+<button id="locate" title="Show my location">◎</button>
+<div id="drawer">
+  <div class="top"><b id="dTitle">Kyoto places</b>
+    <button id="allOn">All</button><button id="allOff">None</button>
+    <button class="close" id="closeBtn">Done</button></div>
+  <div id="list"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+// ---- Categories: icon + colour per place type ----
+const CAT = {
+  temple:     { icon:"🛕", color:"#f6d2c8", label:"Temple" },
+  shrine:     { icon:"⛩️", color:"#fbd5d0", label:"Shrine" },
+  nature:     { icon:"🎋", color:"#cfe8d4", label:"Nature / park" },
+  viewpoint:  { icon:"🔭", color:"#d3e2f5", label:"Viewpoint" },
+  food:       { icon:"🍱", color:"#fbe6c4", label:"Food / market" },
+  street:     { icon:"🏮", color:"#f7d3e2", label:"Street / district" },
+  station:    { icon:"🚉", color:"#e5e7eb", label:"Station" },
+  hotel:      { icon:"🏨", color:"#d6dbf0", label:"Hotel" }
+};
+
+// ---- Fixed pins (always shown) ----
+const FIXED = [
+  { city:"Kyoto", name:"Our hotel (Kyoto)",  cat:"hotel",   lat:34.98064, lng:135.76393 },
+  { city:"Tokyo", name:"Our hotel (Tokyo)",  cat:"hotel",   lat:35.69556, lng:139.70228 },
+  { city:"Kyoto", name:"Kyoto Station",      cat:"station", lat:34.98461, lng:135.75843 },
+  { city:"Tokyo", name:"Shinjuku Station",   cat:"station", lat:35.69018, lng:139.70028 },
+  { city:"Fuji",  name:"Kawaguchiko Station",cat:"station", lat:35.49843, lng:138.76868 }
+];
+
+// ---- Places (sample set; full list comes from the planning sheet) ----
+const PLACES = [
+  { id:"fushimi", city:"Kyoto", area:"South (Inari)", name:"Fushimi Inari Taisha", cat:"shrine", type:"Shrine / hike",
+    lat:34.96752, lng:135.77971, slot:"Sat 28 AM", time:"2–3 h", best:"Before 08:00",
+    note:"Open 24 h; JR Nara line from Kyoto Stn, 5 min", book:"No" },
+  { id:"skyway", city:"Kyoto", area:"Kyoto Station", name:"Kyoto Station Skyway", cat:"viewpoint", type:"Viewpoint",
+    lat:34.98523, lng:135.75829, slot:"Wed 25 eve", time:"30–45 min", best:"Evening",
+    note:"Free; one subway stop from the hotel", book:"No" },
+  { id:"bamboo", city:"Kyoto", area:"West (Arashiyama)", name:"Arashiyama Bamboo Grove", cat:"nature", type:"Nature",
+    lat:35.01720, lng:135.67170, slot:"West day AM", time:"45 min", best:"Before 08:30",
+    note:"Very crowded from mid-morning", book:"No" },
+  { id:"tenryuji", city:"Kyoto", area:"West (Arashiyama)", name:"Tenryu-ji", cat:"temple", type:"Temple / garden",
+    lat:35.01622, lng:135.67294, slot:"West day AM", time:"1 h", best:"Morning",
+    note:"Next to the bamboo grove", book:"No" },
+  { id:"otagi", city:"Kyoto", area:"West (Arashiyama)", name:"Otagi Nenbutsu-ji", cat:"temple", type:"Temple / 1,200 statues",
+    lat:35.03116, lng:135.66123, slot:"West day", time:"45 min", best:"08:00–17:00",
+    note:"¥300 adults, under-15 free; taxi from Arashiyama ~5 min, then walk down", book:"No" },
+  { id:"adashino", city:"Kyoto", area:"West (Arashiyama)", name:"Adashino Nenbutsu-ji", cat:"temple", type:"Temple / 8,000 statues",
+    lat:35.02692, lng:135.66463, slot:"West day", time:"45 min", best:"Last entry 16:00",
+    note:"¥500 adults, elementary free; cash-only ticket machine", book:"No" },
+  { id:"kinkaku", city:"Kyoto", area:"Northwest", name:"Kinkaku-ji", cat:"temple", type:"Temple",
+    lat:35.03953, lng:135.72954, slot:"West day PM", time:"1 h", best:"Afternoon",
+    note:"Pairs with Ryoan-ji (20 min apart)", book:"No" },
+  { id:"ryoanji", city:"Kyoto", area:"Northwest", name:"Ryoan-ji", cat:"temple", type:"Temple / rock garden",
+    lat:35.03346, lng:135.71809, slot:"West day PM", time:"1 h", best:"Afternoon",
+    note:"Randen line links it to Arashiyama", book:"No" },
+  { id:"kurama", city:"Kyoto", area:"North (Kurama)", name:"Kurama-dera", cat:"temple", type:"Temple / hike",
+    lat:35.11787, lng:135.77065, slot:"North day", time:"3–4 h", best:"Start by 09:30",
+    note:"Closes 16:00; steep steps; trail on to Kibune", book:"No" },
+  { id:"kiyomizu", city:"Kyoto", area:"East (Higashiyama)", name:"Kiyomizu-dera", cat:"temple", type:"Temple / illumination",
+    lat:34.99430, lng:135.78444, slot:"Thu or Fri eve", time:"1.5 h", best:"Until 21:30",
+    note:"Night illumination 21–30 Nov; very crowded", book:"No" },
+  { id:"gion", city:"Kyoto", area:"East (Gion)", name:"Gion – Hanamikoji", cat:"street", type:"Historic district",
+    lat:35.00802, lng:135.77546, slot:"Any evening", time:"1–1.5 h", best:"Evening",
+    note:"Photography banned in private lanes", book:"No" },
+  { id:"nishiki", city:"Kyoto", area:"Central", name:"Nishiki Market", cat:"food", type:"Market / food",
+    lat:35.00502, lng:135.76557, slot:"North day PM", time:"1 h", best:"Before 17:00",
+    note:"Many stalls close late afternoon", book:"No" },
+  { id:"sensoji", city:"Tokyo", area:"Asakusa", name:"Senso-ji", cat:"temple", type:"Temple",
+    lat:35.71477, lng:139.79665, slot:"Tue 1 AM", time:"1–1.5 h", best:"Before 09:00", note:"", book:"No" },
+  { id:"shibuyasky", city:"Tokyo", area:"Shibuya", name:"Shibuya Sky", cat:"viewpoint", type:"Viewpoint",
+    lat:35.65838, lng:139.70222, slot:"Sat 28 eve", time:"1–1.5 h", best:"Sunset (~16:30)",
+    note:"Timed tickets; sunset slots sell out", book:"Yes" },
+  { id:"chureito", city:"Fuji", area:"Shimoyoshida", name:"Chureito Pagoda", cat:"viewpoint", type:"Viewpoint / shrine",
+    lat:35.50049, lng:138.80082, slot:"Mon 30 AM", time:"1.5 h", best:"Morning",
+    note:"~400 steps; Fuji Excursion stops at Shimoyoshida", book:"No" }
+];
+
+// ---- Selection state (saved on this phone) ----
+const KEY = "jp2026-selected";
+let selected;
+try { selected = new Set(JSON.parse(localStorage.getItem(KEY)) || PLACES.map(p => p.id)); }
+catch (e) { selected = new Set(PLACES.map(p => p.id)); }
+function save() { try { localStorage.setItem(KEY, JSON.stringify([...selected])); } catch (e) {} }
+
+// ---- Map ----
+const map = L.map("map", { zoomControl:false });
+L.control.zoom({ position:"topright" }).addTo(map);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom:19, attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+function pinIcon(p, fixed) {
+  const c = CAT[p.cat];
+  return L.divIcon({ className:"", iconSize:null,
+    html:`<div class="pin${fixed ? " fixed" : ""}"><span class="ic" style="background:${c.color}">${c.icon}</span><span class="lb">${esc(p.name)}</span></div>` });
+}
+const dirLink = p => `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}&travelmode=transit`;
+function popupHtml(p) {
+  const rows = [["Area",p.area],["Slot",p.slot],["Time",p.time],["Best",p.best],["Note",p.note],["Book",p.book]]
+    .filter(r => r[1]).map(r => `<tr><td>${r[0]}</td><td>${esc(r[1])}</td></tr>`).join("");
+  return `<div class="pop"><h3>${esc(p.name)}</h3><div class="t">${esc(p.type || CAT[p.cat].label)}</div>
+    <table>${rows}</table><a class="go" href="${dirLink(p)}" target="_blank" rel="noopener">Directions in Google Maps</a></div>`;
+}
+
+const markers = {};
+PLACES.forEach(p => { markers[p.id] = L.marker([p.lat, p.lng], { icon:pinIcon(p) }).bindPopup(popupHtml(p)); });
+FIXED.forEach(f => L.marker([f.lat, f.lng], { icon:pinIcon(f, true), zIndexOffset:1000 })
+  .bindPopup(popupHtml({ ...f, type:CAT[f.cat].label })).addTo(map));
+
+let city = "Kyoto";
+try { city = localStorage.getItem("jp2026-city") || "Kyoto"; } catch (e) {}
+
+function render(fit) {
+  PLACES.forEach(p => {
+    const show = p.city === city && selected.has(p.id);
+    if (show && !map.hasLayer(markers[p.id])) markers[p.id].addTo(map);
+    if (!show && map.hasLayer(markers[p.id])) map.removeLayer(markers[p.id]);
+  });
+  if (fit) {
+    const pts = PLACES.filter(p => p.city === city).concat(FIXED.filter(f => f.city === city)).map(p => [p.lat, p.lng]);
+    map.fitBounds(pts, { paddingTopLeft:[30, 30], paddingBottomRight:[150, 40], maxZoom:14 });
+  }
+  document.querySelectorAll("#seg button").forEach(b => b.classList.toggle("on", b.dataset.city === city));
+  document.getElementById("dTitle").textContent = city + " places";
+  buildList();
+}
+
+function buildList() {
+  const groups = {};
+  PLACES.filter(p => p.city === city).forEach(p => (groups[p.area] = groups[p.area] || []).push(p));
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+  Object.entries(groups).forEach(([area, ps]) => {
+    const g = document.createElement("div"); g.className = "grp";
+    const allOn = ps.every(p => selected.has(p.id));
+    g.innerHTML = `<h4>${esc(area)} <a>${allOn ? "hide all" : "show all"}</a></h4>`;
+    g.querySelector("a").onclick = () => { ps.forEach(p => allOn ? selected.delete(p.id) : selected.add(p.id)); save(); render(); };
+    ps.forEach(p => {
+      const c = CAT[p.cat];
+      const row = document.createElement("label"); row.className = "row";
+      row.innerHTML = `<input type="checkbox" ${selected.has(p.id) ? "checked" : ""}>
+        <span class="ic" style="background:${c.color}">${c.icon}</span><span>${esc(p.name)}</span>
+        <span class="ty">${esc(p.slot)}</span>`;
+      row.querySelector("input").onchange = e => { e.target.checked ? selected.add(p.id) : selected.delete(p.id); save(); render(); };
+      g.appendChild(row);
+    });
+    list.appendChild(g);
+  });
+}
+
+document.querySelectorAll("#seg button").forEach(b => b.onclick = () => {
+  city = b.dataset.city; try { localStorage.setItem("jp2026-city", city); } catch (e) {}
+  render(true);
+});
+const drawer = document.getElementById("drawer");
+document.getElementById("listBtn").onclick = () => drawer.classList.toggle("open");
+document.getElementById("closeBtn").onclick = () => drawer.classList.remove("open");
+document.getElementById("allOn").onclick = () => { PLACES.filter(p => p.city === city).forEach(p => selected.add(p.id)); save(); render(); };
+document.getElementById("allOff").onclick = () => { PLACES.filter(p => p.city === city).forEach(p => selected.delete(p.id)); save(); render(); };
+
+let me;
+document.getElementById("locate").onclick = () => map.locate({ setView:true, maxZoom:15 });
+map.on("locationfound", e => { if (me) map.removeLayer(me); me = L.circleMarker(e.latlng, { radius:8, color:"#fff", weight:3, fillColor:"#1a73e8", fillOpacity:1 }).addTo(map); });
+map.on("locationerror", () => {});
+
+// ---- Declutter: hide a label when it would overlap one already shown (zoom in to reveal it) ----
+const fixedMarkers = [];
+map.eachLayer(l => { if (l instanceof L.Marker) fixedMarkers.push(l); });
+function declutter() {
+  const shown = [];
+  const ordered = fixedMarkers.concat(Object.values(markers)).filter(m => map.hasLayer(m));
+  ordered.forEach(m => {
+    const el = m.getElement(); if (!el) return;
+    const lb = el.querySelector(".lb"); const ic = el.querySelector(".ic");
+    lb.style.visibility = "visible";
+    const r = lb.getBoundingClientRect();
+    const hit = shown.some(s => !(r.right < s.left || r.left > s.right || r.bottom < s.top || r.top > s.bottom));
+    if (hit) lb.style.visibility = "hidden"; else shown.push(r);
+    shown.push(ic.getBoundingClientRect());
+  });
+}
+map.on("zoomend moveend", declutter);
+const _render = render;
+render = fit => { _render(fit); setTimeout(declutter, 0); };
+
+render(true);
+</script>
+</body>
+</html>
