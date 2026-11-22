@@ -83,76 +83,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.22/leaflet-maplibre-gl.js"></script>
+<script src="places.js"></script>
 <script>
-// ---- Categories: icon + colour per place type ----
-const CAT = {
-  temple:     { icon:"🛕", color:"#f6d2c8", label:"Temple" },
-  shrine:     { icon:"⛩️", color:"#fbd5d0", label:"Shrine" },
-  nature:     { icon:"🎋", color:"#cfe8d4", label:"Nature / park" },
-  viewpoint:  { icon:"🔭", color:"#d3e2f5", label:"Viewpoint" },
-  food:       { icon:"🍱", color:"#fbe6c4", label:"Food / market" },
-  street:     { icon:"🏮", color:"#f7d3e2", label:"Street / district" },
-  station:    { icon:"🚉", color:"#e5e7eb", label:"Station" },
-  hotel:      { icon:"🏨", color:"#d6dbf0", label:"Hotel" }
-};
-
-// ---- Fixed pins (always shown) ----
-const FIXED = [
-  { city:"Kyoto", name:"Chisun Premium Kyoto Kujo (Hotel)", gq:"Chisun Premium Kyoto Kujo", cat:"hotel", lat:34.98064, lng:135.76393 },
-  { city:"Tokyo", name:"Gracery Shinjuku (Hotel)", gq:"Hotel Gracery Shinjuku", cat:"hotel", lat:35.69556, lng:139.70228 },
-  { city:"Kyoto", name:"Kyoto Station",      cat:"station", lat:34.98461, lng:135.75843 },
-  { city:"Tokyo", name:"Shinjuku Station",   cat:"station", lat:35.69018, lng:139.70028 },
-  { city:"Fuji",  name:"Kawaguchiko Station",cat:"station", lat:35.49843, lng:138.76868 }
-];
-
-// ---- Places (sample set; full list comes from the planning sheet) ----
-const PLACES = [
-  { id:"fushimi", city:"Kyoto", area:"South (Inari)", name:"Fushimi Inari Taisha", cat:"shrine", type:"Shrine / hike",
-    lat:34.96752, lng:135.77971, slot:"Sat 28 AM", time:"2–3 h", best:"Before 08:00",
-    note:"Open 24 h; JR Nara line from Kyoto Stn, 5 min", book:"No" },
-  { id:"skyway", city:"Kyoto", area:"Kyoto Station", name:"Kyoto Station Skyway", gq:"Kyoto Station Building Skyway", cat:"viewpoint", type:"Viewpoint",
-    lat:34.98523, lng:135.75829, slot:"Wed 25 eve", time:"30–45 min", best:"Evening",
-    note:"Free; one subway stop from the hotel", book:"No" },
-  { id:"bamboo", city:"Kyoto", area:"West (Arashiyama)", name:"Arashiyama Bamboo Grove", cat:"nature", type:"Nature",
-    lat:35.01720, lng:135.67170, slot:"West day AM", time:"45 min", best:"Before 08:30",
-    note:"Very crowded from mid-morning", book:"No" },
-  { id:"tenryuji", city:"Kyoto", area:"West (Arashiyama)", name:"Tenryu-ji", cat:"temple", type:"Temple / garden",
-    lat:35.01622, lng:135.67294, slot:"West day AM", time:"1 h", best:"Morning",
-    note:"Next to the bamboo grove", book:"No" },
-  { id:"otagi", city:"Kyoto", area:"West (Arashiyama)", name:"Otagi Nenbutsu-ji", cat:"temple", type:"Temple / 1,200 statues",
-    lat:35.03116, lng:135.66123, slot:"West day", time:"45 min", best:"08:00–17:00",
-    note:"¥300 adults, under-15 free; taxi from Arashiyama ~5 min, then walk down", book:"No" },
-  { id:"adashino", city:"Kyoto", area:"West (Arashiyama)", name:"Adashino Nenbutsu-ji", cat:"temple", type:"Temple / 8,000 statues",
-    lat:35.02692, lng:135.66463, slot:"West day", time:"45 min", best:"Last entry 16:00",
-    note:"¥500 adults, elementary free; cash-only ticket machine", book:"No" },
-  { id:"kinkaku", city:"Kyoto", area:"Northwest", name:"Kinkaku-ji", cat:"temple", type:"Temple",
-    lat:35.03953, lng:135.72954, slot:"West day PM", time:"1 h", best:"Afternoon",
-    note:"Pairs with Ryoan-ji (20 min apart)", book:"No" },
-  { id:"ryoanji", city:"Kyoto", area:"Northwest", name:"Ryoan-ji", cat:"temple", type:"Temple / rock garden",
-    lat:35.03346, lng:135.71809, slot:"West day PM", time:"1 h", best:"Afternoon",
-    note:"Randen line links it to Arashiyama", book:"No" },
-  { id:"kurama", city:"Kyoto", area:"North (Kurama)", name:"Kurama-dera", cat:"temple", type:"Temple / hike",
-    lat:35.11787, lng:135.77065, slot:"North day", time:"3–4 h", best:"Start by 09:30",
-    note:"Closes 16:00; steep steps; trail on to Kibune", book:"No" },
-  { id:"kiyomizu", city:"Kyoto", area:"East (Higashiyama)", name:"Kiyomizu-dera", cat:"temple", type:"Temple / illumination",
-    lat:34.99430, lng:135.78444, slot:"Thu or Fri eve", time:"1.5 h", best:"Until 21:30",
-    note:"Night illumination 21–30 Nov; very crowded", book:"No" },
-  { id:"gion", city:"Kyoto", area:"East (Gion)", name:"Gion – Hanamikoji", gq:"Hanamikoji Street, Gion, Kyoto", cat:"street", type:"Historic district",
-    lat:35.00802, lng:135.77546, slot:"Any evening", time:"1–1.5 h", best:"Evening",
-    note:"Photography banned in private lanes", book:"No" },
-  { id:"nishiki", city:"Kyoto", area:"Central", name:"Nishiki Market", cat:"food", type:"Market / food",
-    lat:35.00502, lng:135.76557, slot:"North day PM", time:"1 h", best:"Before 17:00",
-    note:"Many stalls close late afternoon", book:"No" },
-  { id:"sensoji", city:"Tokyo", area:"Asakusa", name:"Senso-ji", cat:"temple", type:"Temple",
-    lat:35.71477, lng:139.79665, slot:"Tue 1 AM", time:"1–1.5 h", best:"Before 09:00", note:"", book:"No" },
-  { id:"shibuyasky", city:"Tokyo", area:"Shibuya", name:"Shibuya Sky", gq:"SHIBUYA SKY", cat:"viewpoint", type:"Viewpoint",
-    lat:35.65838, lng:139.70222, slot:"Sat 28 eve", time:"1–1.5 h", best:"Sunset (~16:30)",
-    note:"Timed tickets; sunset slots sell out", book:"Yes" },
-  { id:"chureito", city:"Fuji", area:"Shimoyoshida", name:"Chureito Pagoda", gq:"Chureito Pagoda, Fujiyoshida", cat:"viewpoint", type:"Viewpoint / shrine",
-    lat:35.50049, lng:138.80082, slot:"Mon 30 AM", time:"1.5 h", best:"Morning",
-    note:"~400 steps; Fuji Excursion stops at Shimoyoshida", book:"No" }
-];
-
 // ---- Photos: hand-picked from Wikimedia Commons (free licences, credited in each pop-up) ----
 const PHOTOS = {
  "fushimi": {
@@ -244,6 +176,120 @@ const PHOTOS = {
   "src": "https://commons.wikimedia.org/wiki/File:12-Chureito-pagoda-and-Mount-Fuji-Japan_%2829677439878%29.jpg",
   "by": "Dang Son",
   "lic": "CC0"
+ },
+ "railway": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/UMEKOJI_STEAM_LOCOMOTIVE_MUSEUM_ROUNDHOUSE_KYOTO_JAPAN_JUNE_2012_%287418852076%29.jpg/500px-UMEKOJI_STEAM_LOCOMOTIVE_MUSEUM_ROUNDHOUSE_KYOTO_JAPAN_JUNE_2012_%287418852076%29.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:UMEKOJI_STEAM_LOCOMOTIVE_MUSEUM_ROUNDHOUSE_KYOTO_JAPAN_JUNE_2012_%287418852076%29.jpg",
+  "by": "calflier001",
+  "lic": "CC BY-SA 2.0"
+ },
+ "monkey": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Iwatayama_%28Arashiyama_%2C_Kyoto%29_Monkey_Park_hdsr_S5_30.jpg/500px-Iwatayama_%28Arashiyama_%2C_Kyoto%29_Monkey_Park_hdsr_S5_30.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Iwatayama_%28Arashiyama_%2C_Kyoto%29_Monkey_Park_hdsr_S5_30.jpg",
+  "by": "Hyppolyte de Saint-Rambert",
+  "lic": "CC BY 4.0"
+ },
+ "ohara": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/%E4%B8%89%E5%8D%83%E9%99%A2%E3%81%AE%E3%81%8A%E5%9C%B0%E8%94%B5%E6%A7%98_%28258188539%29.jpeg/500px-%E4%B8%89%E5%8D%83%E9%99%A2%E3%81%AE%E3%81%8A%E5%9C%B0%E8%94%B5%E6%A7%98_%28258188539%29.jpeg",
+  "src": "https://commons.wikimedia.org/wiki/File:%E4%B8%89%E5%8D%83%E9%99%A2%E3%81%AE%E3%81%8A%E5%9C%B0%E8%94%B5%E6%A7%98_%28258188539%29.jpeg",
+  "by": "Arvined Winstud",
+  "lic": "CC BY-SA 3.0"
+ },
+ "ninenzaka": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Gion_-_Nineizaka_%28Ninenzaka%29%2C_Kyoto%2C_Japan_%2848923272228%29.jpg/500px-Gion_-_Nineizaka_%28Ninenzaka%29%2C_Kyoto%2C_Japan_%2848923272228%29.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Gion_-_Nineizaka_%28Ninenzaka%29%2C_Kyoto%2C_Japan_%2848923272228%29.jpg",
+  "by": "Domenico Convertini",
+  "lic": "CC BY-SA 2.0"
+ },
+ "tmg": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Tokyo_Metropolitan_Government_Building_No.1_-_Shinjuku%2C_Tokyo_-_DSC05442.jpg/500px-Tokyo_Metropolitan_Government_Building_No.1_-_Shinjuku%2C_Tokyo_-_DSC05442.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Tokyo_Metropolitan_Government_Building_No.1_-_Shinjuku%2C_Tokyo_-_DSC05442.jpg",
+  "by": "Daderot",
+  "lic": "CC0"
+ },
+ "scramble": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Tokyo_Shibuya_Scramble_Crossing_2018-10-09.jpg/500px-Tokyo_Shibuya_Scramble_Crossing_2018-10-09.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Tokyo_Shibuya_Scramble_Crossing_2018-10-09.jpg",
+  "by": "Benh LIEU SONG",
+  "lic": "CC BY-SA 2.0"
+ },
+ "meiji": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Meiji-jingu_Torii_1.jpg/500px-Meiji-jingu_Torii_1.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Meiji-jingu_Torii_1.jpg",
+  "by": "Zairon",
+  "lic": "CC BY-SA 4.0"
+ },
+ "takeshita": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Japan_Tokyo_Takeshita_street_at_summer_-_%E6%9D%B1%E4%BA%AC%E7%AB%B9%E4%B8%8B.jpg/500px-Japan_Tokyo_Takeshita_street_at_summer_-_%E6%9D%B1%E4%BA%AC%E7%AB%B9%E4%B8%8B.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Japan_Tokyo_Takeshita_street_at_summer_-_%E6%9D%B1%E4%BA%AC%E7%AB%B9%E4%B8%8B.jpg",
+  "by": "japanvlogjp",
+  "lic": "CC BY-SA 4.0"
+ },
+ "kappabashi": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Cream_and_red_coffee_cup-shaped_balconies%2C_Niimi_Tableware%2C_Kappabashi_Dougu_Street%2C_Tokyo%2C_Japan.jpg/500px-Cream_and_red_coffee_cup-shaped_balconies%2C_Niimi_Tableware%2C_Kappabashi_Dougu_Street%2C_Tokyo%2C_Japan.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Cream_and_red_coffee_cup-shaped_balconies%2C_Niimi_Tableware%2C_Kappabashi_Dougu_Street%2C_Tokyo%2C_Japan.jpg",
+  "by": "Basile Morin",
+  "lic": "CC BY-SA 4.0"
+ },
+ "takao": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Takao-Lift.JPG/500px-Takao-Lift.JPG",
+  "src": "https://commons.wikimedia.org/wiki/File:Takao-Lift.JPG",
+  "by": "Nyao148",
+  "lic": "CC BY-SA 3.0"
+ },
+ "oishi": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Kawaguchiko%2C_Part_III_-_Kawaguchiko6783.jpg/500px-Kawaguchiko%2C_Part_III_-_Kawaguchiko6783.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Kawaguchiko%2C_Part_III_-_Kawaguchiko6783.jpg",
+  "by": "lumoplank",
+  "lic": "CC0"
+ },
+ "oshino": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Oshino_Hakkai_-_Oshino6878.jpg/500px-Oshino_Hakkai_-_Oshino6878.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Oshino_Hakkai_-_Oshino6878.jpg",
+  "by": "lumoplank",
+  "lic": "CC0"
+ },
+ "fifth": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Fuji_Subaru_Line_5th_Station%2C_Mount_Fuji_%2842361741530%29.jpg/500px-Fuji_Subaru_Line_5th_Station%2C_Mount_Fuji_%2842361741530%29.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Fuji_Subaru_Line_5th_Station%2C_Mount_Fuji_%2842361741530%29.jpg",
+  "by": "Fabio Achilli",
+  "lic": "CC BY 2.0"
+ },
+ "sagano": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Sagano_Romantic_Train.jpg/500px-Sagano_Romantic_Train.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Sagano_Romantic_Train.jpg",
+  "by": "Streetdeck",
+  "lic": "CC BY-SA 4.0"
+ },
+ "neon": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Kabukicho_red_gate_and_colorful_neon_street_signs_at_night%2C_Shinjuku%2C_Tokyo%2C_Japan.jpg/500px-Kabukicho_red_gate_and_colorful_neon_street_signs_at_night%2C_Shinjuku%2C_Tokyo%2C_Japan.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Kabukicho_red_gate_and_colorful_neon_street_signs_at_night%2C_Shinjuku%2C_Tokyo%2C_Japan.jpg",
+  "by": "Basile Morin",
+  "lic": "CC BY-SA 4.0"
+ },
+ "momiji": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Kawaguchiko%2C_Part_II_-_Kawaguchiko6811.jpg/500px-Kawaguchiko%2C_Part_II_-_Kawaguchiko6811.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Kawaguchiko%2C_Part_II_-_Kawaguchiko6811.jpg",
+  "by": "lumoplank",
+  "lic": "CC0"
+ },
+ "ropeway": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/KachikachiyamaRopeway.JPG/500px-KachikachiyamaRopeway.JPG",
+  "src": "https://commons.wikimedia.org/wiki/File:KachikachiyamaRopeway.JPG",
+  "by": "Ippukucho",
+  "lic": "CC BY 3.0"
+ },
+ "fujiq": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Fujiyama_2008_%282765653784%29.jpg/500px-Fujiyama_2008_%282765653784%29.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Fujiyama_2008_%282765653784%29.jpg",
+  "by": "scion_cho",
+  "lic": "CC BY 2.0"
+ },
+ "akihabara": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Sotokanda%2C_Akihabara_Electric_Town_at_night_20231114.png/500px-Sotokanda%2C_Akihabara_Electric_Town_at_night_20231114.png",
+  "src": "https://commons.wikimedia.org/wiki/File:Sotokanda%2C_Akihabara_Electric_Town_at_night_20231114.png",
+  "by": "Phineyes",
+  "lic": "CC0"
  }
 };
 
@@ -302,8 +348,10 @@ function render(fit) {
     if (!show && map.hasLayer(markers[p.id])) map.removeLayer(markers[p.id]);
   });
   if (fit) {
-    const pts = PLACES.filter(p => p.city === city).concat(FIXED.filter(f => f.city === city)).map(p => [p.lat, p.lng]);
-    map.fitBounds(pts, { paddingTopLeft:[30, 30], paddingBottomRight:[150, 40], maxZoom:14 });
+    // Fit to the area where most places are; outliers (Kurama, Ohara, Takao) are a zoom-out away
+    const CORE = { Kyoto:[[34.962,135.660],[35.042,135.800]], Tokyo:[[35.620,139.690],[35.735,139.800]] };
+    const pts = CORE[city] || PLACES.filter(p => p.city === city).concat(FIXED.filter(f => f.city === city)).map(p => [p.lat, p.lng]);
+    map.fitBounds(pts, CORE[city] ? { padding:[10, 10] } : { paddingTopLeft:[20, 20], paddingBottomRight:[140, 20], maxZoom:14 });
   }
   document.querySelectorAll("#seg button").forEach(b => b.classList.toggle("on", b.dataset.city === city));
   document.getElementById("dTitle").textContent = city + " places";
