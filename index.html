@@ -325,7 +325,7 @@ function pinIcon(p, fixed) {
 const gLink = p => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(p.gq || (p.name + " " + p.city));
 function popupHtml(p) {
   const ph = PHOTOS[p.id];
-  const photo = ph ? `<img class="ph" src="${ph.img}" alt="${esc(p.name)}" loading="lazy">
+  const photo = ph ? `<img class="ph" src="${ph.img}" alt="${esc(p.name)}" loading="lazy" onerror="this.nextElementSibling.remove();this.remove()">
     <div class="cr">Photo: <a href="${ph.src}" target="_blank" rel="noopener">${esc(ph.by)}</a>, ${esc(ph.lic)}</div>` : "";
   const rows = [["Area",p.area],["Slot",p.slot],["Time",p.time],["Best",p.best],["Note",p.note],["Book",p.book]]
     .filter(r => r[1]).map(r => `<tr><td>${r[0]}</td><td>${esc(r[1])}</td></tr>`).join("");
