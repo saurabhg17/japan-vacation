@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>Japan 2026 – Places Map</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <style>
   :root { --ink:#1d2433; --muted:#6b7280; --line:#e5e7eb; --accent:#c8442f; --bg:#fff; }
   * { box-sizing:border-box; }
@@ -27,6 +28,10 @@
   .pin.fixed .lb { background:var(--ink); color:#fff; }
 
   /* popup */
+  .pop img.ph { width:100%; height:150px; object-fit:cover; border-radius:6px; display:block; background:#eee; }
+  .pop .cr { font-size:10px; color:var(--muted); margin:2px 0 6px; }
+  .pop .cr a { color:var(--muted); }
+  .leaflet-popup-content { margin:10px 12px; }
   .pop h3 { margin:0 0 2px; font-size:15px; }
   .pop .t { color:var(--muted); font-size:12px; margin-bottom:6px; }
   .pop table { border-collapse:collapse; font-size:12px; }
@@ -76,6 +81,8 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.22/leaflet-maplibre-gl.js"></script>
 <script>
 // ---- Categories: icon + colour per place type ----
 const CAT = {
@@ -91,8 +98,8 @@ const CAT = {
 
 // ---- Fixed pins (always shown) ----
 const FIXED = [
-  { city:"Kyoto", name:"Our hotel (Kyoto)",  cat:"hotel",   lat:34.98064, lng:135.76393 },
-  { city:"Tokyo", name:"Our hotel (Tokyo)",  cat:"hotel",   lat:35.69556, lng:139.70228 },
+  { city:"Kyoto", name:"Chisun Premium Kyoto Kujo (Hotel)", gq:"Chisun Premium Kyoto Kujo", cat:"hotel", lat:34.98064, lng:135.76393 },
+  { city:"Tokyo", name:"Gracery Shinjuku (Hotel)", gq:"Hotel Gracery Shinjuku", cat:"hotel", lat:35.69556, lng:139.70228 },
   { city:"Kyoto", name:"Kyoto Station",      cat:"station", lat:34.98461, lng:135.75843 },
   { city:"Tokyo", name:"Shinjuku Station",   cat:"station", lat:35.69018, lng:139.70028 },
   { city:"Fuji",  name:"Kawaguchiko Station",cat:"station", lat:35.49843, lng:138.76868 }
@@ -103,7 +110,7 @@ const PLACES = [
   { id:"fushimi", city:"Kyoto", area:"South (Inari)", name:"Fushimi Inari Taisha", cat:"shrine", type:"Shrine / hike",
     lat:34.96752, lng:135.77971, slot:"Sat 28 AM", time:"2–3 h", best:"Before 08:00",
     note:"Open 24 h; JR Nara line from Kyoto Stn, 5 min", book:"No" },
-  { id:"skyway", city:"Kyoto", area:"Kyoto Station", name:"Kyoto Station Skyway", cat:"viewpoint", type:"Viewpoint",
+  { id:"skyway", city:"Kyoto", area:"Kyoto Station", name:"Kyoto Station Skyway", gq:"Kyoto Station Building Skyway", cat:"viewpoint", type:"Viewpoint",
     lat:34.98523, lng:135.75829, slot:"Wed 25 eve", time:"30–45 min", best:"Evening",
     note:"Free; one subway stop from the hotel", book:"No" },
   { id:"bamboo", city:"Kyoto", area:"West (Arashiyama)", name:"Arashiyama Bamboo Grove", cat:"nature", type:"Nature",
@@ -130,7 +137,7 @@ const PLACES = [
   { id:"kiyomizu", city:"Kyoto", area:"East (Higashiyama)", name:"Kiyomizu-dera", cat:"temple", type:"Temple / illumination",
     lat:34.99430, lng:135.78444, slot:"Thu or Fri eve", time:"1.5 h", best:"Until 21:30",
     note:"Night illumination 21–30 Nov; very crowded", book:"No" },
-  { id:"gion", city:"Kyoto", area:"East (Gion)", name:"Gion – Hanamikoji", cat:"street", type:"Historic district",
+  { id:"gion", city:"Kyoto", area:"East (Gion)", name:"Gion – Hanamikoji", gq:"Hanamikoji Street, Gion, Kyoto", cat:"street", type:"Historic district",
     lat:35.00802, lng:135.77546, slot:"Any evening", time:"1–1.5 h", best:"Evening",
     note:"Photography banned in private lanes", book:"No" },
   { id:"nishiki", city:"Kyoto", area:"Central", name:"Nishiki Market", cat:"food", type:"Market / food",
@@ -138,13 +145,107 @@ const PLACES = [
     note:"Many stalls close late afternoon", book:"No" },
   { id:"sensoji", city:"Tokyo", area:"Asakusa", name:"Senso-ji", cat:"temple", type:"Temple",
     lat:35.71477, lng:139.79665, slot:"Tue 1 AM", time:"1–1.5 h", best:"Before 09:00", note:"", book:"No" },
-  { id:"shibuyasky", city:"Tokyo", area:"Shibuya", name:"Shibuya Sky", cat:"viewpoint", type:"Viewpoint",
+  { id:"shibuyasky", city:"Tokyo", area:"Shibuya", name:"Shibuya Sky", gq:"SHIBUYA SKY", cat:"viewpoint", type:"Viewpoint",
     lat:35.65838, lng:139.70222, slot:"Sat 28 eve", time:"1–1.5 h", best:"Sunset (~16:30)",
     note:"Timed tickets; sunset slots sell out", book:"Yes" },
-  { id:"chureito", city:"Fuji", area:"Shimoyoshida", name:"Chureito Pagoda", cat:"viewpoint", type:"Viewpoint / shrine",
+  { id:"chureito", city:"Fuji", area:"Shimoyoshida", name:"Chureito Pagoda", gq:"Chureito Pagoda, Fujiyoshida", cat:"viewpoint", type:"Viewpoint / shrine",
     lat:35.50049, lng:138.80082, slot:"Mon 30 AM", time:"1.5 h", best:"Morning",
     note:"~400 steps; Fuji Excursion stops at Shimoyoshida", book:"No" }
 ];
+
+// ---- Photos: hand-picked from Wikimedia Commons (free licences, credited in each pop-up) ----
+const PHOTOS = {
+ "fushimi": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Torii_gates%E2%80%94Fushimi_Inari_Shrine_%289977683204%29.jpg/500px-Torii_gates%E2%80%94Fushimi_Inari_Shrine_%289977683204%29.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Torii_gates%E2%80%94Fushimi_Inari_Shrine_%289977683204%29.jpg",
+  "by": "BriYYZ",
+  "lic": "CC BY-SA 2.0"
+ },
+ "bamboo": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Arashiyama_Bamboo_Grove_%2844050138950%29.jpg/500px-Arashiyama_Bamboo_Grove_%2844050138950%29.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Arashiyama_Bamboo_Grove_%2844050138950%29.jpg",
+  "by": "Benh LIEU SONG",
+  "lic": "CC BY-SA 2.0"
+ },
+ "tenryuji": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Arashiyama%2C_Part_II_-_Arashiyama7538.jpg/500px-Arashiyama%2C_Part_II_-_Arashiyama7538.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Arashiyama%2C_Part_II_-_Arashiyama7538.jpg",
+  "by": "lumoplank",
+  "lic": "CC0"
+ },
+ "otagi": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Rakan_statues_covered_in_moss_at_Otagi_Nenbutsu_temple.png/500px-Rakan_statues_covered_in_moss_at_Otagi_Nenbutsu_temple.png",
+  "src": "https://commons.wikimedia.org/wiki/File:Rakan_statues_covered_in_moss_at_Otagi_Nenbutsu_temple.png",
+  "by": "Thomas Housieaux",
+  "lic": "CC BY 4.0"
+ },
+ "adashino": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Adashino_nenbutsuji01s3200.jpg/500px-Adashino_nenbutsuji01s3200.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Adashino_nenbutsuji01s3200.jpg",
+  "by": "663highland",
+  "lic": "CC BY-SA 4.0"
+ },
+ "kinkaku": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Kinkaku-ji_the_Golden_Temple_in_Kyoto_overlooking_the_lake_-_high_rez.JPG/500px-Kinkaku-ji_the_Golden_Temple_in_Kyoto_overlooking_the_lake_-_high_rez.JPG",
+  "src": "https://commons.wikimedia.org/wiki/File:Kinkaku-ji_the_Golden_Temple_in_Kyoto_overlooking_the_lake_-_high_rez.JPG",
+  "by": "Jaycangel",
+  "lic": "CC BY-SA 3.0"
+ },
+ "ryoanji": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/RyoanJi-Dry_garden.jpg/500px-RyoanJi-Dry_garden.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:RyoanJi-Dry_garden.jpg",
+  "by": "Stephane D'Alu",
+  "lic": "CC BY-SA 3.0"
+ },
+ "kiyomizu": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Kiyomizu-dera%2C_Kyoto%2C_November_2016_-01.jpg/500px-Kiyomizu-dera%2C_Kyoto%2C_November_2016_-01.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Kiyomizu-dera%2C_Kyoto%2C_November_2016_-01.jpg",
+  "by": "Martin Falbisoner",
+  "lic": "CC BY-SA 4.0"
+ },
+ "kurama": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Kurama-Dera_%28Kyoto_Sakyo-ku%29_Temple_hdsr_S5_25.jpg/500px-Kurama-Dera_%28Kyoto_Sakyo-ku%29_Temple_hdsr_S5_25.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Kurama-Dera_%28Kyoto_Sakyo-ku%29_Temple_hdsr_S5_25.jpg",
+  "by": "Hyppolyte de Saint-Rambert",
+  "lic": "CC BY 4.0"
+ },
+ "gion": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Streets_of_Gion%2C_Kyoto_-_Gion7708.jpg/500px-Streets_of_Gion%2C_Kyoto_-_Gion7708.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Streets_of_Gion%2C_Kyoto_-_Gion7708.jpg",
+  "by": "lumoplank",
+  "lic": "CC0"
+ },
+ "nishiki": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Nishiki_ichiba_kyoto.jpg/500px-Nishiki_ichiba_kyoto.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Nishiki_ichiba_kyoto.jpg",
+  "by": "Pitan",
+  "lic": "CC BY-SA 3.0"
+ },
+ "sensoji": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Senso-ji_Kaminarimon_201503b.jpg/500px-Senso-ji_Kaminarimon_201503b.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Senso-ji_Kaminarimon_201503b.jpg",
+  "by": "Tak1701d",
+  "lic": "CC BY-SA 3.0"
+ },
+ "shibuyasky": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Shibuya_Scramble_Square_-_SHIBUYA_SKY_10.jpg/500px-Shibuya_Scramble_Square_-_SHIBUYA_SKY_10.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Shibuya_Scramble_Square_-_SHIBUYA_SKY_10.jpg",
+  "by": "Kakidai",
+  "lic": "CC BY-SA 4.0"
+ },
+ "skyway": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Skyway_of_Kyoto_Station_Building_at_night_20260921b.jpg/500px-Skyway_of_Kyoto_Station_Building_at_night_20260921b.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:Skyway_of_Kyoto_Station_Building_at_night_20260921b.jpg",
+  "by": "掬茶",
+  "lic": "CC BY-SA 4.0"
+ },
+ "chureito": {
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/12-Chureito-pagoda-and-Mount-Fuji-Japan_%2829677439878%29.jpg/500px-12-Chureito-pagoda-and-Mount-Fuji-Japan_%2829677439878%29.jpg",
+  "src": "https://commons.wikimedia.org/wiki/File:12-Chureito-pagoda-and-Mount-Fuji-Japan_%2829677439878%29.jpg",
+  "by": "Dang Son",
+  "lic": "CC0"
+ }
+};
 
 // ---- Selection state (saved on this phone) ----
 const KEY = "jp2026-selected";
@@ -156,9 +257,18 @@ function save() { try { localStorage.setItem(KEY, JSON.stringify([...selected]))
 // ---- Map ----
 const map = L.map("map", { zoomControl:false });
 L.control.zoom({ position:"topright" }).addTo(map);
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  maxZoom:19, attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
+const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/";
+const BASE = {
+  "Street": L.maplibreGL({ style:"https://tiles.openfreemap.org/styles/liberty",
+    attribution:'<a href="https://openfreemap.org">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }),
+  "Light": L.layerGroup([
+    L.tileLayer(ESRI + "Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", { maxZoom:16, attribution:"&copy; Esri" }),
+    L.tileLayer(ESRI + "Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}", { maxZoom:16 }) ]),
+  "Satellite": L.tileLayer(ESRI + "World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+    maxZoom:19, attribution:"Imagery &copy; Esri, Maxar, Earthstar Geographics" })
+};
+BASE["Street"].addTo(map);
+L.control.layers(BASE, null, { position:"topright" }).addTo(map);
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
 function pinIcon(p, fixed) {
@@ -166,18 +276,21 @@ function pinIcon(p, fixed) {
   return L.divIcon({ className:"", iconSize:null,
     html:`<div class="pin${fixed ? " fixed" : ""}"><span class="ic" style="background:${c.color}">${c.icon}</span><span class="lb">${esc(p.name)}</span></div>` });
 }
-const dirLink = p => `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}&travelmode=transit`;
+const gLink = p => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(p.gq || (p.name + " " + p.city));
 function popupHtml(p) {
+  const ph = PHOTOS[p.id];
+  const photo = ph ? `<img class="ph" src="${ph.img}" alt="${esc(p.name)}" loading="lazy">
+    <div class="cr">Photo: <a href="${ph.src}" target="_blank" rel="noopener">${esc(ph.by)}</a>, ${esc(ph.lic)}</div>` : "";
   const rows = [["Area",p.area],["Slot",p.slot],["Time",p.time],["Best",p.best],["Note",p.note],["Book",p.book]]
     .filter(r => r[1]).map(r => `<tr><td>${r[0]}</td><td>${esc(r[1])}</td></tr>`).join("");
-  return `<div class="pop"><h3>${esc(p.name)}</h3><div class="t">${esc(p.type || CAT[p.cat].label)}</div>
-    <table>${rows}</table><a class="go" href="${dirLink(p)}" target="_blank" rel="noopener">Directions in Google Maps</a></div>`;
+  return `<div class="pop">${photo}<h3>${esc(p.name)}</h3><div class="t">${esc(p.type || CAT[p.cat].label)}</div>
+    <table>${rows}</table><a class="go" href="${gLink(p)}" target="_blank" rel="noopener">Open in Google Maps</a></div>`;
 }
 
 const markers = {};
-PLACES.forEach(p => { markers[p.id] = L.marker([p.lat, p.lng], { icon:pinIcon(p) }).bindPopup(popupHtml(p)); });
+PLACES.forEach(p => { markers[p.id] = L.marker([p.lat, p.lng], { icon:pinIcon(p) }).bindPopup(popupHtml(p), { maxWidth:270, minWidth:250, autoPanPaddingTopLeft:[10,60] }); });
 FIXED.forEach(f => L.marker([f.lat, f.lng], { icon:pinIcon(f, true), zIndexOffset:1000 })
-  .bindPopup(popupHtml({ ...f, type:CAT[f.cat].label })).addTo(map));
+  .bindPopup(popupHtml({ ...f, type:CAT[f.cat].label }), { maxWidth:270, minWidth:200 }).addTo(map));
 
 let city = "Kyoto";
 try { city = localStorage.getItem("jp2026-city") || "Kyoto"; } catch (e) {}
