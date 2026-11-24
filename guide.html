@@ -1,0 +1,962 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Japan &mdash; Cities &amp; Things To Do</title>
+<style>
+:root{
+ --bg:#faf7f2; --panel:#ffffff; --ink:#1d1b19; --mut:#6d6760; --line:#e2dbd1;
+ --accent:#9c2b2b; --sea:#dce8ee; --land:#efe7da; --lake:#cfe0e8; --spoke:#c9b9a6;
+ --shadow:0 1px 2px rgba(35,28,20,.06),0 8px 24px rgba(35,28,20,.07);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#14130f; --panel:#1d1c18; --ink:#ece7df; --mut:#a09889; --line:#32302a;
+ --accent:#e0705f; --sea:#182028; --land:#2a2620; --lake:#1e2a33; --spoke:#4a4438;
+ --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+ --bg:#14130f; --panel:#1d1c18; --ink:#ece7df; --mut:#a09889; --line:#32302a;
+ --accent:#e0705f; --sea:#182028; --land:#2a2620; --lake:#1e2a33; --spoke:#4a4438;
+ --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font:16px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+h1,h2,h3{font-family:ui-serif,Georgia,"Times New Roman",serif;font-weight:600;letter-spacing:-.01em;margin:0}
+a{color:inherit}
+header.top{padding:52px 0 30px;border-bottom:1px solid var(--line)}
+header.top h1{font-size:clamp(28px,5vw,46px);line-height:1.1}
+header.top p{color:var(--mut);margin:12px 0 0;max-width:62ch}
+.kick{font:600 12px/1 ui-sans-serif,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+nav.jump{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);
+ backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-bottom:28px}
+nav.jump .in{display:flex;gap:6px;overflow-x:auto;padding:10px 16px;max-width:1180px;margin:0 auto;scrollbar-width:thin}
+nav.jump a{white-space:nowrap;text-decoration:none;font-size:13.5px;padding:6px 11px;border-radius:999px;border:1px solid var(--line);color:var(--mut)}
+nav.jump a span{opacity:.55;font-variant-numeric:tabular-nums}
+nav.jump a:hover{color:var(--ink);border-color:var(--ink)}
+section{margin:0 0 56px}
+.sechead{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:0 0 6px}
+.sechead h2{font-size:clamp(21px,3vw,28px)}
+.sechead .sub{color:var(--mut);font-size:14px}
+.mapwrap{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow);margin-top:18px}
+svg.map{display:block;width:100%;height:auto}
+.map .sea{fill:var(--sea)}
+.map .land{fill:var(--land);stroke:color-mix(in srgb,var(--ink) 22%,transparent);stroke-width:.8}
+.map .lake{fill:var(--lake);stroke:none}
+.map .spokes line{stroke:var(--spoke);stroke-width:1;stroke-dasharray:3 4;opacity:.85}
+.map .star{fill:var(--accent);stroke:var(--panel);stroke-width:1.2}
+.map .star.hub{fill:var(--accent);stroke:var(--panel);stroke-width:1.6;transform:scale(1.35);transform-box:fill-box;transform-origin:center}
+.map .hubring{fill:none;stroke:var(--accent);stroke-width:1.4;opacity:.45}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .map .star.hub{fill:#f2efe8}}
+:root[data-theme="dark"] .map .star.hub{fill:#f2efe8}
+.map text{font-family:ui-sans-serif,sans-serif}
+.map .plabel{font-size:12.5px;font-weight:600;fill:var(--ink)}
+.map .plabel.hub{font-size:14px}
+.map .ptime{font-size:10.5px;font-weight:500;fill:var(--mut)}
+.map .fuji path{fill:none;stroke:var(--mut);stroke-width:1.4}
+.map .fuji text{font-size:10px;fill:var(--mut);letter-spacing:.04em}
+.maplegend{display:flex;gap:16px;flex-wrap:wrap;color:var(--mut);font-size:12.5px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;margin-top:18px;font-size:14.5px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 11.5px/1 ui-sans-serif,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+td.t{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600}
+td.n{color:var(--mut)}
+.city{scroll-margin-top:62px}
+.chead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+ border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:18px}
+.chead h2{font-size:clamp(20px,3vw,27px)}
+.chead .count{color:var(--mut);font-size:13px;white-space:nowrap}
+.grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(246px,1fr))}
+.card{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;
+ box-shadow:var(--shadow);display:flex;flex-direction:column}
+.card .ph{aspect-ratio:4/3;background:var(--land);overflow:hidden}
+.card img{width:100%;height:100%;object-fit:cover;display:block}
+.noimg{display:grid;place-items:center;height:100%;color:var(--mut);font-size:12px}
+.card figcaption{padding:12px 13px 14px}
+.card h3{font-size:16.5px;line-height:1.25;margin:7px 0 5px}
+.card p{margin:0;color:var(--mut);font-size:13.2px;line-height:1.45}
+.badge{display:inline-block;font:600 10.5px/1 ui-sans-serif,sans-serif;letter-spacing:.07em;
+ text-transform:uppercase;color:var(--bc);border:1px solid color-mix(in srgb,var(--bc) 45%,transparent);
+ background:color-mix(in srgb,var(--bc) 10%,transparent);padding:4px 7px;border-radius:5px}
+.legend{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+details{margin-top:28px;border-top:1px solid var(--line);padding-top:16px}
+summary{cursor:pointer;color:var(--mut);font-size:13.5px}
+details ul{columns:2;column-gap:28px;font-size:12px;color:var(--mut);padding-left:18px}
+details li{break-inside:avoid;margin-bottom:3px}
+footer{border-top:1px solid var(--line);margin-top:20px;padding:24px 0 60px;color:var(--mut);font-size:13px}
+@media (max-width:620px){
+ .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+ .card h3{font-size:15px}.card p{font-size:12.4px}
+ details ul{columns:1}
+}
+@media print{nav.jump{display:none}.card{break-inside:avoid}}
+
+.tabs{position:sticky;top:0;z-index:30;display:flex;gap:4px;padding:8px 12px;background:var(--panel);border-bottom:1px solid var(--line)}
+.tabs a{text-decoration:none;font:600 14px/1 ui-sans-serif,sans-serif;padding:8px 14px;border-radius:8px;color:var(--mut)}
+.tabs a.on{background:var(--ink);color:var(--bg)}
+nav.jump{top:47px}
+.city{scroll-margin-top:110px}
+.card .ph a{display:block;width:100%;height:100%}
+.card h3 a{text-decoration:none}
+.card h3 a:hover{text-decoration:underline}
+.further{border-top:2px solid var(--line);padding-top:26px;margin:10px 0 26px}
+.further .kick{margin:0 0 4px}.fsub{color:var(--mut);margin:0;font-size:14px}
+</style>
+</head><body>
+<div class="tabs"><a href="./">Map</a><a href="guide.html" class="on">Guide</a></div>
+<div class="wrap">
+<header class="top">
+<p class="kick">Kyoto &middot; Tokyo &middot; Mt Fuji &middot; 24 Nov &ndash; 2 Dec 2026</p>
+<h1>Cities &amp; things to&nbsp;do</h1>
+<p>129 places. Our three bases come first; other destinations are further down for reference. Tap a photo or a name to open the place in Google Maps.</p>
+</header>
+</div>
+<nav class="jump"><div class="in"><a href="#kyoto">Kyoto <span>34</span></a><a href="#tokyo">Tokyo <span>38</span></a><a href="#fuji-five-lakes">Fuji Five Lakes <span>9</span></a><a href="#hakone">Hakone <span>7</span></a><a href="#nikko">Nikko <span>6</span></a><a href="#kamakura">Kamakura <span>6</span></a><a href="#nara">Nara <span>5</span></a><a href="#osaka">Osaka <span>7</span></a><a href="#kanazawa">Kanazawa <span>7</span></a><a href="#takayama---shirakawa-go">Takayama &amp; Shirakawa-go <span>6</span></a><a href="#nagano---around">Nagano &amp; around <span>4</span></a></div></nav>
+<div class="wrap">
+<section id="map">
+<div class="sechead"><h2>Where everything is</h2><span class="sub">Times are one-way from Tokyo by fastest regular rail</span></div>
+<div class="mapwrap"><svg viewBox="0 0 636 487" class="map" role="img" aria-label="Schematic map of central Honshu with the candidate cities marked">
+<rect class="sea" x="0" y="0" width="636" height="487"/>
+<path class="land" d="M 50.0 330.4 L 102.6 337.1 L 124.4 341.6 L 113.5 367.4 L 101.7 388.6 L 95.4 425.6 L 127.2 464.8 L 155.3 478.2 L 179.0 457.0 L 195.3 425.6 L 227.1 392.0 L 242.5 358.4 L 254.3 324.8 L 258.9 296.8 L 268.0 324.8 L 277.1 343.8 L 299.8 341.6 L 331.6 336.0 L 358.8 345.0 L 379.7 347.2 L 390.6 319.2 L 404.2 300.2 L 413.3 291.2 L 431.5 291.2 L 428.8 313.6 L 436.0 347.2 L 454.2 324.8 L 461.5 302.4 L 456.0 289.0 L 463.3 274.4 L 481.4 268.8 L 495.1 285.6 L 506.0 280.0 L 511.4 252.0 L 520.5 233.0 L 536.0 229.6 L 549.6 235.2 L 536.0 252.0 L 526.9 268.8 L 529.6 311.4 L 563.2 285.6 L 578.6 257.6 L 590.5 224.0 L 619.5 220.6 L 608.6 190.4 L 596.8 156.8 L 599.5 123.2 L 613.2 95.2 L 631.3 67.2 L 634.1 22.4 L 629.5 -16.8 L 451.5 -16.8 L 408.8 28.0 L 381.5 58.2 L 345.2 73.9 L 313.4 84.0 L 286.1 104.2 L 263.4 100.8 L 281.6 61.6 L 298.0 20.2 L 277.1 28.0 L 245.3 39.2 L 238.9 84.0 L 231.6 123.2 L 204.4 162.4 L 186.2 196.0 L 182.6 229.6 L 172.6 246.4 L 154.4 240.8 L 131.7 235.2 L 118.1 248.6 L 104.5 233.0 L 95.4 215.0 L 77.2 233.0 L 50.0 240.8 Z"/>
+<path class="lake" d="M 184.4 246.4 L 195.3 257.6 L 199.8 274.4 L 190.8 291.2 L 181.7 300.2 L 172.6 293.4 L 168.1 277.8 L 177.1 263.2 Z"/>
+<g class="spokes"><line x1="519.3" y1="226.1" x2="499.6" y2="266.7"/><line x1="519.3" y1="226.1" x2="459.4" y2="276.4"/><line x1="519.3" y1="226.1" x2="428.0" y2="246.4"/><line x1="519.3" y1="226.1" x2="504.1" y2="106.2"/><line x1="519.3" y1="226.1" x2="375.3" y2="117.7"/><line x1="519.3" y1="226.1" x2="400.9" y2="108.3"/><line x1="519.3" y1="226.1" x2="356.3" y2="163.7"/><line x1="519.3" y1="226.1" x2="290.9" y2="174.7"/><line x1="519.3" y1="226.1" x2="259.4" y2="161.6"/><line x1="519.3" y1="226.1" x2="236.0" y2="125.7"/><line x1="519.3" y1="226.1" x2="156.1" y2="301.2"/><line x1="519.3" y1="226.1" x2="159.4" y2="337.7"/><line x1="519.3" y1="226.1" x2="131.9" y2="336.7"/></g>
+<g class="fuji"><path d="M424.9 256.0 l7 12 h-14 Z"/><text x="412.9" y="271.0" text-anchor="end">Mt Fuji</text></g>
+<g class="stars"><circle class="hubring" cx="519.3" cy="226.1" r="14"/><path class="star hub" transform="translate(519.3,226.1)" d="M0,-8.4 L2.0,-2.6 L8.1,-2.6 L3.1,1.0 L5.0,6.9 L0,3.3 L-5.0,6.9 L-3.1,1.0 L-8.1,-2.6 L-2.0,-2.6 Z"/><path class="star" transform="translate(499.6,266.7)" d="M0,-8.4 L2.0,-2.6 L8.1,-2.6 L3.1,1.0 L5.0,6.9 L0,3.3 L-5.0,6.9 L-3.1,1.0 L-8.1,-2.6 L-2.0,-2.6 Z"/><path class="star" transform="translate(459.4,276.4)" d="M0,-8.4 L2.0,-2.6 L8.1,-2.6 L3.1,1.0 L5.0,6.9 L0,3.3 L-5.0,6.9 L-3.1,1.0 L-8.1,-2.6 L-2.0,-2.6 Z"/><path class="star" transform="translate(428.0,246.4)" d="M0,-8.4 L2.0,-2.6 L8.1,-2.6 L3.1,1.0 L5.0,6.9 L0,3.3 L-5.0,6.9 L-3.1,1.0 L-8.1,-2.6 L-2.0,-2.6 Z"/><path class="star" transform="translate(504.1,106.2)" d="M0,-8.4 L2.0,-2.6 L8.1,-2.6 L3.1,1.0 L5.0,6.9 L0,3.3 L-5.0,6.9 L-3.1,1.0 L-8.1,-2.6 L-2.0,-2.6 Z"/><path class="star" transform="translate(375.3,117.7)" d="M0,-8.4 L2.0,-2.6 L8.1,-2.6 L3.1,1.0 L5.0,6.9 L0,3.3 L-5.0,6.9 L-3.1,1.0 L-8.1,-2.6 L-2.0,-2.6 Z"/><path class="star" transform="translate(400.9,108.3)" d="M0,-8.4 L2.0,-2.6 L8.1,-2.6 L3.1,1.0 L5.0,6.9 L0,3.3 L-5.0,6.9 L-3.1,1.0 L-8.1,-2.6 L-2.0,-2.6 Z"/><path class="star" transform="translate(356.3,163.7)" d="M0,-8.4 L2.0,-2.6 L8.1,-2.6 L3.1,1.0 L5.0,6.9 L0,3.3 L-5.0,6.9 L-3.1,1.0 L-8.1,-2.6 L-2.0,-2.6 Z"/><path class="star" transform="translate(290.9,174.7)" d="M0,-8.4 L2.0,-2.6 L8.1,-2.6 L3.1,1.0 L5.0,6.9 L0,3.3 L-5.0,6.9 L-3.1,1.0 L-8.1,-2.6 L-2.0,-2.6 Z"/><path class="star" transform="translate(259.4,161.6)" d="M0,-8.4 L2.0,-2.6 L8.1,-2.6 L3.1,1.0 L5.0,6.9 L0,3.3 L-5.0,6.9 L-3.1,1.0 L-8.1,-2.6 L-2.0,-2.6 Z"/><path class="star" transform="translate(236.0,125.7)" d="M0,-8.4 L2.0,-2.6 L8.1,-2.6 L3.1,1.0 L5.0,6.9 L0,3.3 L-5.0,6.9 L-3.1,1.0 L-8.1,-2.6 L-2.0,-2.6 Z"/><path class="star" transform="translate(156.1,301.2)" d="M0,-8.4 L2.0,-2.6 L8.1,-2.6 L3.1,1.0 L5.0,6.9 L0,3.3 L-5.0,6.9 L-3.1,1.0 L-8.1,-2.6 L-2.0,-2.6 Z"/><path class="star" transform="translate(159.4,337.7)" d="M0,-8.4 L2.0,-2.6 L8.1,-2.6 L3.1,1.0 L5.0,6.9 L0,3.3 L-5.0,6.9 L-3.1,1.0 L-8.1,-2.6 L-2.0,-2.6 Z"/><path class="star" transform="translate(131.9,336.7)" d="M0,-8.4 L2.0,-2.6 L8.1,-2.6 L3.1,1.0 L5.0,6.9 L0,3.3 L-5.0,6.9 L-3.1,1.0 L-8.1,-2.6 L-2.0,-2.6 Z"/></g>
+<g class="plabels"><text class="plabel hub" x="533.3" y="229.1" text-anchor="start">Tokyo<tspan class="ptime" x="533.3" dy="12">arrival city</tspan></text><text class="plabel" x="510.6" y="281.7" text-anchor="start">Kamakura<tspan class="ptime" x="510.6" dy="12">1 h 00 from Tokyo</tspan></text><text class="plabel" x="448.4" y="294.4" text-anchor="end">Hakone<tspan class="ptime" x="448.4" dy="12">1 h 25 from Tokyo</tspan></text><text class="plabel" x="417.0" y="240.4" text-anchor="end">Fuji Five Lakes<tspan class="ptime" x="417.0" dy="12">1 h 55 from Tokyo</tspan></text><text class="plabel" x="515.1" y="110.2" text-anchor="start">Nikko<tspan class="ptime" x="515.1" dy="12">1 h 50 from Tokyo</tspan></text><text class="plabel" x="364.3" y="114.7" text-anchor="end">Nagano<tspan class="ptime" x="364.3" dy="12">1 h 20 from Tokyo</tspan></text><text class="plabel" x="411.9" y="101.3" text-anchor="start">Jigokudani<tspan class="ptime" x="411.9" dy="12">2 h 15 from Tokyo</tspan></text><text class="plabel" x="367.3" y="167.7" text-anchor="start">Matsumoto<tspan class="ptime" x="367.3" dy="12">2 h 40 from Tokyo</tspan></text><text class="plabel" x="279.9" y="190.7" text-anchor="end">Takayama<tspan class="ptime" x="279.9" dy="12">4 h 20 from Tokyo</tspan></text><text class="plabel" x="248.4" y="152.6" text-anchor="end">Shirakawa-go<tspan class="ptime" x="248.4" dy="12">5 h 00 from Tokyo</tspan></text><text class="plabel" x="225.0" y="126.7" text-anchor="end">Kanazawa<tspan class="ptime" x="225.0" dy="12">2 h 30 from Tokyo</tspan></text><text class="plabel" x="145.1" y="296.2" text-anchor="end">Kyoto<tspan class="ptime" x="145.1" dy="12">2 h 15 from Tokyo</tspan></text><text class="plabel" x="169.4" y="348.7" text-anchor="start">Nara<tspan class="ptime" x="169.4" dy="12">3 h 00 from Tokyo</tspan></text><text class="plabel" x="120.9" y="343.7" text-anchor="end">Osaka<tspan class="ptime" x="120.9" dy="12">2 h 30 from Tokyo</tspan></text></g>
+</svg>
+<div class="maplegend"><span>&#9733; Destination</span><span>Dashed line &middot; rail connection to Tokyo</span><span>Schematic map, not to survey accuracy</span></div>
+</div>
+<table>
+<thead><tr><th>Useful leg not via Tokyo</th><th>Time</th><th>Service</th></tr></thead>
+<tbody><tr><td>Kyoto &rarr; Nara</td><td class="t">45 min</td><td class="n">JR Miyakoji rapid</td></tr><tr><td>Kyoto &rarr; Osaka</td><td class="t">15 min</td><td class="n">Shinkansen; 30 min by JR rapid</td></tr><tr><td>Osaka &rarr; Nara</td><td class="t">35 min</td><td class="n">Kintetsu line</td></tr><tr><td>Kyoto &rarr; Kanazawa</td><td class="t">2 h 25</td><td class="n">Thunderbird, change at Tsuruga</td></tr><tr><td>Kanazawa &rarr; Shirakawa-go</td><td class="t">1 h 15</td><td class="n">Highway bus</td></tr><tr><td>Shirakawa-go &rarr; Takayama</td><td class="t">50 min</td><td class="n">Highway bus</td></tr><tr><td>Nagano &rarr; Kanazawa</td><td class="t">1 h 10</td><td class="n">Hokuriku Shinkansen</td></tr><tr><td>Nagano &rarr; Matsumoto</td><td class="t">50 min</td><td class="n">Ltd exp Shinano</td></tr><tr><td>Nagano &rarr; Jigokudani</td><td class="t">1 h 00</td><td class="n">Nagaden line + bus</td></tr><tr><td>Hakone &rarr; Fuji Five Lakes</td><td class="t">2 h 00</td><td class="n">Bus via Gotemba</td></tr></tbody>
+</table>
+<div class="legend"><span class="badge" style="--bc:#8a5a2b">Shop &amp; Craft</span><span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span><span class="badge" style="--bc:#3f7d51">Garden &amp; Park</span><span class="badge" style="--bc:#2a7f7a">Nature &amp; Mountain</span><span class="badge" style="--bc:#7a6248">Castle &amp; Historic</span><span class="badge" style="--bc:#6b4e9e">Museum &amp; Art</span><span class="badge" style="--bc:#2f6fb0">City &amp; Street</span><span class="badge" style="--bc:#b57a1e">Market &amp; Food</span><span class="badge" style="--bc:#4a54a8">Viewpoint &amp; Tower</span><span class="badge" style="--bc:#c0557f">Onsen</span><span class="badge" style="--bc:#1f7f9e">Scenic Ride</span><span class="badge" style="--bc:#6b8f2a">Wildlife</span><span class="badge" style="--bc:#a2497f">Experience</span></div>
+</section>
+<section id="kyoto" class="city">
+<header class="chead"><h2>Kyoto</h2><span class="count">34 places</span></header>
+<div class="grid"><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Fushimi%20Inari-taisha%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Fushimi Inari-taisha" src="guide-img/kyoto-00.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Fushimi%20Inari-taisha%20Kyoto" target="_blank" rel="noopener">Fushimi Inari-taisha</a></h3>
+<p>Thousands of vermilion torii climbing the mountain</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Arashiyama%20Bamboo%20Grove%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Arashiyama Bamboo Grove" src="guide-img/kyoto-01.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2a7f7a">Nature &amp; Mountain</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Arashiyama%20Bamboo%20Grove%20Kyoto" target="_blank" rel="noopener">Arashiyama Bamboo Grove</a></h3>
+<p>Towering bamboo path on the western edge</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Tenry%C5%AB-ji%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Tenryū-ji" src="guide-img/kyoto-02.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Tenry%C5%AB-ji%20Kyoto" target="_blank" rel="noopener">Tenryū-ji</a></h3>
+<p>Zen temple with a borrowed-scenery pond garden</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Togetsuky%C5%8D%20Bridge%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Togetsukyō Bridge" src="guide-img/kyoto-03.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Togetsuky%C5%8D%20Bridge%20Kyoto" target="_blank" rel="noopener">Togetsukyō Bridge</a></h3>
+<p>Arashiyama&#x27;s landmark bridge over the Katsura</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Iwatayama%20Monkey%20Park%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Iwatayama Monkey Park" src="guide-img/kyoto-04.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#6b8f2a">Wildlife</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Iwatayama%20Monkey%20Park%20Kyoto" target="_blank" rel="noopener">Iwatayama Monkey Park</a></h3>
+<p>Hilltop macaques and a city panorama</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Kiyomizu-dera%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Kiyomizu-dera" src="guide-img/kyoto-05.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Kiyomizu-dera%20Kyoto" target="_blank" rel="noopener">Kiyomizu-dera</a></h3>
+<p>Wooden stage projecting over the hillside</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Sannenzaka%20%26%20Ninenzaka%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Sannenzaka &amp; Ninenzaka" src="guide-img/kyoto-06.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Sannenzaka%20%26%20Ninenzaka%20Kyoto" target="_blank" rel="noopener">Sannenzaka &amp; Ninenzaka</a></h3>
+<p>Preserved stone lanes of shops below Kiyomizu</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Kinkaku-ji%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Kinkaku-ji" src="guide-img/kyoto-07.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Kinkaku-ji%20Kyoto" target="_blank" rel="noopener">Kinkaku-ji</a></h3>
+<p>The Golden Pavilion mirrored in its pond</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Ginkaku-ji%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Ginkaku-ji" src="guide-img/kyoto-08.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Ginkaku-ji%20Kyoto" target="_blank" rel="noopener">Ginkaku-ji</a></h3>
+<p>Silver Pavilion with raked sand garden and moss</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Philosopher%27s%20Path%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Philosopher&#x27;s Path" src="guide-img/kyoto-09.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#3f7d51">Garden &amp; Park</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Philosopher%27s%20Path%20Kyoto" target="_blank" rel="noopener">Philosopher&#x27;s Path</a></h3>
+<p>Canal-side walk linking eastern temples</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Nij%C5%8D%20Castle%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Nijō Castle" src="guide-img/kyoto-10.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#7a6248">Castle &amp; Historic</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Nij%C5%8D%20Castle%20Kyoto" target="_blank" rel="noopener">Nijō Castle</a></h3>
+<p>Shogun&#x27;s palace with nightingale floors</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Nishiki%20Market%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Nishiki Market" src="guide-img/kyoto-11.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b57a1e">Market &amp; Food</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Nishiki%20Market%20Kyoto" target="_blank" rel="noopener">Nishiki Market</a></h3>
+<p>Five-block covered market, &#x27;Kyoto&#x27;s kitchen&#x27;</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Gion%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Gion" src="guide-img/kyoto-12.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Gion%20Kyoto" target="_blank" rel="noopener">Gion</a></h3>
+<p>Geisha district of wooden machiya and teahouses</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Pontoch%C5%8D%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Pontochō" src="guide-img/kyoto-13.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Pontoch%C5%8D%20Kyoto" target="_blank" rel="noopener">Pontochō</a></h3>
+<p>Narrow lantern-lit alley along the Kamo river</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Sanj%C5%ABsangen-d%C5%8D%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Sanjūsangen-dō" src="guide-img/kyoto-14.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Sanj%C5%ABsangen-d%C5%8D%20Kyoto" target="_blank" rel="noopener">Sanjūsangen-dō</a></h3>
+<p>1,001 gilded Kannon statues in a 120 m hall</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=T%C5%8Dfuku-ji%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Tōfuku-ji" src="guide-img/kyoto-15.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=T%C5%8Dfuku-ji%20Kyoto" target="_blank" rel="noopener">Tōfuku-ji</a></h3>
+<p>Maple valley crossed by a covered bridge</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Sanzen-in%2C%20%C5%8Chara%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Sanzen-in, Ōhara" src="guide-img/kyoto-16.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Sanzen-in%2C%20%C5%8Chara%20Kyoto" target="_blank" rel="noopener">Sanzen-in, Ōhara</a></h3>
+<p>Moss garden in a rural valley north of the city</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Kurama-dera%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Kurama-dera" src="guide-img/kyoto-17.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Kurama-dera%20Kyoto" target="_blank" rel="noopener">Kurama-dera</a></h3>
+<p>Mountain temple with a hiking route over to Kibune</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Kifune%20Shrine%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Kifune Shrine" src="guide-img/kyoto-18.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Kifune%20Shrine%20Kyoto" target="_blank" rel="noopener">Kifune Shrine</a></h3>
+<p>Lantern stairway in a cedar gorge</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Shigetsu%20Tenryu-ji" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Shōjin ryōri" src="guide-img/kyoto-19.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b57a1e">Market &amp; Food</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Shigetsu%20Tenryu-ji" target="_blank" rel="noopener">Shōjin ryōri</a></h3>
+<p>Buddhist temple cuisine; entirely vegetarian</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Ry%C5%8Dan-ji%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Ryōan-ji" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/RyoanJi-Dry_garden.jpg/500px-RyoanJi-Dry_garden.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Ry%C5%8Dan-ji%20Kyoto" target="_blank" rel="noopener">Ryōan-ji</a></h3>
+<p>Zen rock garden of 15 stones, 20 min from Kinkaku-ji</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Otagi%20Nenbutsu-ji%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Otagi Nenbutsu-ji" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Rakan_statues_covered_in_moss_at_Otagi_Nenbutsu_temple.png/500px-Rakan_statues_covered_in_moss_at_Otagi_Nenbutsu_temple.png" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Otagi%20Nenbutsu-ji%20Kyoto" target="_blank" rel="noopener">Otagi Nenbutsu-ji</a></h3>
+<p>1,200 whimsical moss-covered stone disciples</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Adashino%20Nenbutsu-ji%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Adashino Nenbutsu-ji" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Adashino_nenbutsuji01s3200.jpg/500px-Adashino_nenbutsuji01s3200.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Adashino%20Nenbutsu-ji%20Kyoto" target="_blank" rel="noopener">Adashino Nenbutsu-ji</a></h3>
+<p>8,000 stone statues and a short bamboo path</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Eikan-d%C5%8D%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Eikan-dō" src="https://live.staticflickr.com/4864/46146782912_ffbea87177_z.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Eikan-d%C5%8D%20Kyoto" target="_blank" rel="noopener">Eikan-dō</a></h3>
+<p>One of Kyoto&#x27;s great maple temples; evening light-up in autumn</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Yasaka%20Shrine%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Yasaka Shrine" src="https://live.staticflickr.com/5675/30635112486_65f95d4ee0_z.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Yasaka%20Shrine%20Kyoto" target="_blank" rel="noopener">Yasaka Shrine</a></h3>
+<p>Lantern-hung shrine at the top of Gion, open all night</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Sagano%20Romantic%20Train%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Sagano Romantic Train" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Sagano_Romantic_Train.jpg/500px-Sagano_Romantic_Train.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#1f7f9e">Scenic Ride</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Sagano%20Romantic%20Train%20Kyoto" target="_blank" rel="noopener">Sagano Romantic Train</a></h3>
+<p>Open-sided trolley train along the Hozu gorge</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Kyoto%20Station%20Skyway%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Kyoto Station Skyway" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Skyway_of_Kyoto_Station_Building_at_night_20260921b.jpg/500px-Skyway_of_Kyoto_Station_Building_at_night_20260921b.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#4a54a8">Viewpoint &amp; Tower</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Kyoto%20Station%20Skyway%20Kyoto" target="_blank" rel="noopener">Kyoto Station Skyway</a></h3>
+<p>Free glass corridor high above the station concourse</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Kyoto%20Railway%20Museum%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Kyoto Railway Museum" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/UMEKOJI_STEAM_LOCOMOTIVE_MUSEUM_ROUNDHOUSE_KYOTO_JAPAN_JUNE_2012_%287418852076%29.jpg/500px-UMEKOJI_STEAM_LOCOMOTIVE_MUSEUM_ROUNDHOUSE_KYOTO_JAPAN_JUNE_2012_%287418852076%29.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#6b4e9e">Museum &amp; Art</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Kyoto%20Railway%20Museum%20Kyoto" target="_blank" rel="noopener">Kyoto Railway Museum</a></h3>
+<p>Steam locomotives in a working roundhouse; closed Wed</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Kurama%20Onsen%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Kurama Onsen" src="https://live.staticflickr.com/2531/3745486669_b1f3215bb2_z.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#c0557f">Onsen</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Kurama%20Onsen%20Kyoto" target="_blank" rel="noopener">Kurama Onsen</a></h3>
+<p>Open-air hot-spring bath at the foot of Kurama</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Nijo%20Castle" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="NAKED meets Nijō Castle" src="https://live.staticflickr.com/2070/2535285476_361553943c_z.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#6b4e9e">Museum &amp; Art</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Nijo%20Castle" target="_blank" rel="noopener">NAKED meets Nijō Castle</a></h3>
+<p>Projection-mapping night show in the castle grounds</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Karamaru%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Karamaru karakami workshop" src="https://live.staticflickr.com/2711/4227751613_60d91e3903_z.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#a2497f">Experience</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Karamaru%20Kyoto" target="_blank" rel="noopener">Karamaru karakami workshop</a></h3>
+<p>Print your own patterned karakami paper; Tue/Fri 10:30</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=kimono%20rental%20Kiyomizu" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Kimono walk" src="https://live.staticflickr.com/7564/15658613756_fbe7a911fe_z.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#a2497f">Experience</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=kimono%20rental%20Kiyomizu" target="_blank" rel="noopener">Kimono walk</a></h3>
+<p>Rent kimono and stroll the Higashiyama lanes</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Ky%C5%ABkyod%C5%8D%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Kyūkyodō" src="https://live.staticflickr.com/8269/8908173178_5c00105819_z.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#8a5a2b">Shop &amp; Craft</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Ky%C5%ABkyod%C5%8D%20Kyoto" target="_blank" rel="noopener">Kyūkyodō</a></h3>
+<p>Incense, washi and letter paper on Teramachi</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Itoya%20Kyoto%20Kyoto" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Itoya Kyoto" src="https://live.staticflickr.com/1295/596694383_75e0bc98df_z.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#8a5a2b">Shop &amp; Craft</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Itoya%20Kyoto%20Kyoto" target="_blank" rel="noopener">Itoya Kyoto</a></h3>
+<p>Stationery floor inside JR Kyoto Isetan</p>
+</figcaption></figure></div>
+</section>
+<section id="tokyo" class="city">
+<header class="chead"><h2>Tokyo</h2><span class="count">38 places</span></header>
+<div class="grid"><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Sens%C5%8D-ji%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Sensō-ji" src="guide-img/tokyo-00.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Sens%C5%8D-ji%20Tokyo" target="_blank" rel="noopener">Sensō-ji</a></h3>
+<p>Tokyo&#x27;s oldest temple, reached through the Nakamise shopping lane</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Tokyo%20Skytree%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Tokyo Skytree" src="guide-img/tokyo-01.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#4a54a8">Viewpoint &amp; Tower</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Tokyo%20Skytree%20Tokyo" target="_blank" rel="noopener">Tokyo Skytree</a></h3>
+<p>634 m broadcasting tower with two observation decks</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Shibuya%20Sky%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Shibuya Sky" src="guide-img/tokyo-02.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#4a54a8">Viewpoint &amp; Tower</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Shibuya%20Sky%20Tokyo" target="_blank" rel="noopener">Shibuya Sky</a></h3>
+<p>Open-air rooftop deck looking down on the crossing</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Shibuya%20Crossing%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Shibuya Crossing" src="guide-img/tokyo-03.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Shibuya%20Crossing%20Tokyo" target="_blank" rel="noopener">Shibuya Crossing</a></h3>
+<p>The scramble intersection and the Hachikō statue</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Takeshita%20Street%2C%20Harajuku%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Takeshita Street, Harajuku" src="guide-img/tokyo-04.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Takeshita%20Street%2C%20Harajuku%20Tokyo" target="_blank" rel="noopener">Takeshita Street, Harajuku</a></h3>
+<p>Teen fashion lane, crêpe stands, kawaii shops</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Meiji%20Shrine%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Meiji Shrine" src="guide-img/tokyo-05.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Meiji%20Shrine%20Tokyo" target="_blank" rel="noopener">Meiji Shrine</a></h3>
+<p>Vast forested shrine precinct beside Harajuku</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Akihabara%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Akihabara" src="guide-img/tokyo-06.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Akihabara%20Tokyo" target="_blank" rel="noopener">Akihabara</a></h3>
+<p>Electronics, anime, multi-floor arcades, retro games</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Omoide%20Yokoch%C5%8D%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Omoide Yokochō" src="guide-img/tokyo-07.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Omoide%20Yokoch%C5%8D%20Tokyo" target="_blank" rel="noopener">Omoide Yokochō</a></h3>
+<p>Postwar alley of tiny eateries beside Shinjuku station</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Metropolitan%20Gov%27t%20Observatory%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Metropolitan Gov&#x27;t Observatory" src="guide-img/tokyo-08.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#4a54a8">Viewpoint &amp; Tower</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Metropolitan%20Gov%27t%20Observatory%20Tokyo" target="_blank" rel="noopener">Metropolitan Gov&#x27;t Observatory</a></h3>
+<p>Free 202 m observation floor in Shinjuku</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=teamLab%20Borderless%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="teamLab Borderless" src="guide-img/tokyo-09.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#6b4e9e">Museum &amp; Art</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=teamLab%20Borderless%20Tokyo" target="_blank" rel="noopener">teamLab Borderless</a></h3>
+<p>Immersive digital art without a fixed route, Azabudai Hills</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=teamLab%20Planets%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="teamLab Planets" src="guide-img/tokyo-10.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#6b4e9e">Museum &amp; Art</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=teamLab%20Planets%20Tokyo" target="_blank" rel="noopener">teamLab Planets</a></h3>
+<p>Barefoot water-and-light installations at Toyosu</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Ghibli%20Museum%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Ghibli Museum" src="guide-img/tokyo-11.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#6b4e9e">Museum &amp; Art</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Ghibli%20Museum%20Tokyo" target="_blank" rel="noopener">Ghibli Museum</a></h3>
+<p>Miyazaki&#x27;s own museum in Mitaka; ticket lottery</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Ueno%20Park%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Ueno Park" src="guide-img/tokyo-12.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#3f7d51">Garden &amp; Park</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Ueno%20Park%20Tokyo" target="_blank" rel="noopener">Ueno Park</a></h3>
+<p>Museum cluster, zoo and ponds in one green block</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Tokyo%20National%20Museum%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Tokyo National Museum" src="guide-img/tokyo-13.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#6b4e9e">Museum &amp; Art</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Tokyo%20National%20Museum%20Tokyo" target="_blank" rel="noopener">Tokyo National Museum</a></h3>
+<p>Japan&#x27;s largest collection of art and antiquities</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=National%20Museum%20of%20Nature%20and%20Science%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="National Museum of Nature and Science" src="guide-img/tokyo-14.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#6b4e9e">Museum &amp; Art</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=National%20Museum%20of%20Nature%20and%20Science%20Tokyo" target="_blank" rel="noopener">National Museum of Nature and Science</a></h3>
+<p>Dinosaurs, natural history and technology, Ueno</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Miraikan%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Miraikan" src="guide-img/tokyo-15.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#6b4e9e">Museum &amp; Art</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Miraikan%20Tokyo" target="_blank" rel="noopener">Miraikan</a></h3>
+<p>Robotics and future science, Odaiba</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Odaiba%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Odaiba" src="guide-img/tokyo-16.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Odaiba%20Tokyo" target="_blank" rel="noopener">Odaiba</a></h3>
+<p>Bayfront island with malls, the Gundam statue and waterfront</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Mount%20Takao%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Mount Takao" src="guide-img/tokyo-17.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2a7f7a">Nature &amp; Mountain</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Mount%20Takao%20Tokyo" target="_blank" rel="noopener">Mount Takao</a></h3>
+<p>Cable car and real hiking trails inside Tokyo</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Meiji%20Jing%C5%AB%20Gaien%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Meiji Jingū Gaien" src="guide-img/tokyo-18.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#3f7d51">Garden &amp; Park</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Meiji%20Jing%C5%AB%20Gaien%20Tokyo" target="_blank" rel="noopener">Meiji Jingū Gaien</a></h3>
+<p>Ginkgo avenue that turns gold in late November</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Rikugi-en%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Rikugi-en" src="guide-img/tokyo-19.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#3f7d51">Garden &amp; Park</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Rikugi-en%20Tokyo" target="_blank" rel="noopener">Rikugi-en</a></h3>
+<p>Edo strolling garden with autumn evening illumination</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Koishikawa%20K%C5%8Drakuen%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Koishikawa Kōrakuen" src="guide-img/tokyo-20.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#3f7d51">Garden &amp; Park</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Koishikawa%20K%C5%8Drakuen%20Tokyo" target="_blank" rel="noopener">Koishikawa Kōrakuen</a></h3>
+<p>Oldest surviving garden in Tokyo, 1629</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Tsukiji%20Outer%20Market%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Tsukiji Outer Market" src="guide-img/tokyo-21.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b57a1e">Market &amp; Food</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Tsukiji%20Outer%20Market%20Tokyo" target="_blank" rel="noopener">Tsukiji Outer Market</a></h3>
+<p>Street-food stalls, knife shops and produce</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Tokyo%20Tower%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Tokyo Tower" src="guide-img/tokyo-22.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#4a54a8">Viewpoint &amp; Tower</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Tokyo%20Tower%20Tokyo" target="_blank" rel="noopener">Tokyo Tower</a></h3>
+<p>333 m red lattice tower from 1958</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Z%C5%8Dj%C5%8D-ji%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Zōjō-ji" src="guide-img/tokyo-23.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Z%C5%8Dj%C5%8D-ji%20Tokyo" target="_blank" rel="noopener">Zōjō-ji</a></h3>
+<p>Tokugawa family temple framed by Tokyo Tower</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Ginza%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Ginza" src="guide-img/tokyo-24.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Ginza%20Tokyo" target="_blank" rel="noopener">Ginza</a></h3>
+<p>Flagship stores and department-store basement food halls</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Nihonbashi%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Nihonbashi" src="guide-img/tokyo-25.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Nihonbashi%20Tokyo" target="_blank" rel="noopener">Nihonbashi</a></h3>
+<p>Historic bridge and the old merchant quarter</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Yanaka%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Yanaka" src="guide-img/tokyo-26.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Yanaka%20Tokyo" target="_blank" rel="noopener">Yanaka</a></h3>
+<p>Low-rise old-Tokyo backstreets, cemetery and cats</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Sumida%20Aquarium%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Sumida Aquarium" src="guide-img/tokyo-27.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#6b8f2a">Wildlife</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Sumida%20Aquarium%20Tokyo" target="_blank" rel="noopener">Sumida Aquarium</a></h3>
+<p>Penguins and jellyfish at the base of Skytree</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Kabukicho%20Ichibangai" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Kabukichō neon &amp; Godzilla" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Kabukicho_red_gate_and_colorful_neon_street_signs_at_night%2C_Shinjuku%2C_Tokyo%2C_Japan.jpg/500px-Kabukicho_red_gate_and_colorful_neon_street_signs_at_night%2C_Shinjuku%2C_Tokyo%2C_Japan.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Kabukicho%20Ichibangai" target="_blank" rel="noopener">Kabukichō neon &amp; Godzilla</a></h3>
+<p>Neon lanes outside the hotel; Godzilla&#x27;s head on the roof</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Shibuya%20PARCO%20Pokemon%20Center%20Nintendo%20TOKYO" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Pokémon Center &amp; Nintendo Tokyo" src="https://live.staticflickr.com/65535/48001700033_1693436906_z.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#8a5a2b">Shop &amp; Craft</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Shibuya%20PARCO%20Pokemon%20Center%20Nintendo%20TOKYO" target="_blank" rel="noopener">Pokémon Center &amp; Nintendo Tokyo</a></h3>
+<p>Both under one roof on Shibuya Parco 6F</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=G.Itoya%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="G.Itoya" src="https://live.staticflickr.com/4457/36894324784_d29e9f3b23_z.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#8a5a2b">Shop &amp; Craft</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=G.Itoya%20Tokyo" target="_blank" rel="noopener">G.Itoya</a></h3>
+<p>Ginza&#x27;s multi-floor stationery flagship, red paperclip sign</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Kakimori%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Kakimori" src="https://live.staticflickr.com/7178/6896828789_72da891c21_z.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#8a5a2b">Shop &amp; Craft</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Kakimori%20Tokyo" target="_blank" rel="noopener">Kakimori</a></h3>
+<p>Build-your-own notebooks and custom ink, Kuramae</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Loft%20Shibuya%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Loft Shibuya" src="https://live.staticflickr.com/2064/2370284247_feb9f09d88_z.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#8a5a2b">Shop &amp; Craft</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Loft%20Shibuya%20Tokyo" target="_blank" rel="noopener">Loft Shibuya</a></h3>
+<p>Floors of stationery, gadgets and lifestyle goods</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Kappabashi%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Kappabashi" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Cream_and_red_coffee_cup-shaped_balconies%2C_Niimi_Tableware%2C_Kappabashi_Dougu_Street%2C_Tokyo%2C_Japan.jpg/500px-Cream_and_red_coffee_cup-shaped_balconies%2C_Niimi_Tableware%2C_Kappabashi_Dougu_Street%2C_Tokyo%2C_Japan.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#8a5a2b">Shop &amp; Craft</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Kappabashi%20Tokyo" target="_blank" rel="noopener">Kappabashi</a></h3>
+<p>Kitchen-tool street: knives and plastic food samples</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Pigment%20Tokyo%20Tokyo" target="_blank" rel="noopener"><div class="noimg">No photo &middot; open in Google Maps</div></a></div>
+<figcaption>
+<span class="badge" style="--bc:#8a5a2b">Shop &amp; Craft</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Pigment%20Tokyo%20Tokyo" target="_blank" rel="noopener">Pigment Tokyo</a></h3>
+<p>Art-supply lab with a wall of pigment jars, Tennōzu</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Dawn%20Avatar%20Robot%20Caf%C3%A9%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Dawn Avatar Robot Café" src="https://live.staticflickr.com/65535/52114882066_c1bc485cc3_z.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#a2497f">Experience</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Dawn%20Avatar%20Robot%20Caf%C3%A9%20Tokyo" target="_blank" rel="noopener">Dawn Avatar Robot Café</a></h3>
+<p>Robots piloted remotely by people with disabilities serve you</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=kimono%20rental%20Asakusa" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Kimono or samurai experience" src="https://live.staticflickr.com/4426/37146286696_590f92aba9_z.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#a2497f">Experience</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=kimono%20rental%20Asakusa" target="_blank" rel="noopener">Kimono or samurai experience</a></h3>
+<p>Dress up and walk to Sensō-ji</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=K%C5%8Denji%20Tokyo" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Kōenji" src="https://live.staticflickr.com/7055/6843512416_bc7a343157_z.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=K%C5%8Denji%20Tokyo" target="_blank" rel="noopener">Kōenji</a></h3>
+<p>Vintage clothing and live-music backstreets</p>
+</figcaption></figure></div>
+</section>
+<section id="fuji-five-lakes" class="city">
+<header class="chead"><h2>Fuji Five Lakes</h2><span class="count">9 places</span></header>
+<div class="grid"><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Mount%20Fuji" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Mount Fuji" src="guide-img/fuji-five-lakes-00.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2a7f7a">Nature &amp; Mountain</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Mount%20Fuji" target="_blank" rel="noopener">Mount Fuji</a></h3>
+<p>3,776 m and at its clearest in winter air</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Lake%20Kawaguchi%20Fujikawaguchiko" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Lake Kawaguchi" src="guide-img/fuji-five-lakes-01.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2a7f7a">Nature &amp; Mountain</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Lake%20Kawaguchi%20Fujikawaguchiko" target="_blank" rel="noopener">Lake Kawaguchi</a></h3>
+<p>Lakeshore Fuji views; Oishi Park on the north bank</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Ch%C5%ABreit%C5%8D%20Pagoda%20Fujikawaguchiko" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Chūreitō Pagoda" src="guide-img/fuji-five-lakes-02.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#4a54a8">Viewpoint &amp; Tower</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Ch%C5%ABreit%C5%8D%20Pagoda%20Fujikawaguchiko" target="_blank" rel="noopener">Chūreitō Pagoda</a></h3>
+<p>The pagoda-and-Fuji view, up about 400 steps</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Mt%20Fuji%20Panoramic%20Ropeway%20Fujikawaguchiko" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Mt Fuji Panoramic Ropeway" src="guide-img/fuji-five-lakes-03.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#1f7f9e">Scenic Ride</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Mt%20Fuji%20Panoramic%20Ropeway%20Fujikawaguchiko" target="_blank" rel="noopener">Mt Fuji Panoramic Ropeway</a></h3>
+<p>Cable car to a lake-and-Fuji overlook</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Iyashi%20no%20Sato%20Fujikawaguchiko" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Iyashi no Sato" src="guide-img/fuji-five-lakes-04.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#6b4e9e">Museum &amp; Art</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Iyashi%20no%20Sato%20Fujikawaguchiko" target="_blank" rel="noopener">Iyashi no Sato</a></h3>
+<p>Rebuilt thatched craft village under Fuji</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Momiji%20Kairo%20Fujikawaguchiko" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Momiji Kairo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Kawaguchiko%2C_Part_II_-_Kawaguchiko6811.jpg/500px-Kawaguchiko%2C_Part_II_-_Kawaguchiko6811.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#3f7d51">Garden &amp; Park</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Momiji%20Kairo%20Fujikawaguchiko" target="_blank" rel="noopener">Momiji Kairo</a></h3>
+<p>Maple tunnel on Lake Kawaguchi&#x27;s north shore</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Oshino%20Hakkai%20Fujikawaguchiko" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Oshino Hakkai" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Oshino_Hakkai_-_Oshino6878.jpg/500px-Oshino_Hakkai_-_Oshino6878.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2a7f7a">Nature &amp; Mountain</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Oshino%20Hakkai%20Fujikawaguchiko" target="_blank" rel="noopener">Oshino Hakkai</a></h3>
+<p>Eight spring-fed ponds in a thatched village</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Fuji-Q%20Highland%20Fujikawaguchiko" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Fuji-Q Highland" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Fujiyama_2008_%282765653784%29.jpg/500px-Fujiyama_2008_%282765653784%29.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#a2497f">Experience</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Fuji-Q%20Highland%20Fujikawaguchiko" target="_blank" rel="noopener">Fuji-Q Highland</a></h3>
+<p>Record-breaking roller coasters facing Fuji</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Fuji%20Subaru%20Line%205th%20Station%20Fujikawaguchiko" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Fuji Subaru Line 5th Station" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Fuji_Subaru_Line_5th_Station%2C_Mount_Fuji_%2842361741530%29.jpg/500px-Fuji_Subaru_Line_5th_Station%2C_Mount_Fuji_%2842361741530%29.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2a7f7a">Nature &amp; Mountain</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Fuji%20Subaru%20Line%205th%20Station%20Fujikawaguchiko" target="_blank" rel="noopener">Fuji Subaru Line 5th Station</a></h3>
+<p>2,305 m up Fuji&#x27;s flank; road may close for snow</p>
+</figcaption></figure></div>
+</section>
+<div class="further"><p class="kick">Further afield</p><p class="fsub">Not on this trip&rsquo;s route &mdash; kept for reference.</p></div>
+<section id="hakone" class="city">
+<header class="chead"><h2>Hakone</h2><span class="count">7 places</span></header>
+<div class="grid"><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Hakone%20Open-Air%20Museum%20Hakone" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Hakone Open-Air Museum" src="guide-img/hakone-00.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#6b4e9e">Museum &amp; Art</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Hakone%20Open-Air%20Museum%20Hakone" target="_blank" rel="noopener">Hakone Open-Air Museum</a></h3>
+<p>Sculpture park with a children&#x27;s climbing structure</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Hakone%20Ropeway%20Hakone" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Hakone Ropeway" src="guide-img/hakone-01.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#1f7f9e">Scenic Ride</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Hakone%20Ropeway%20Hakone" target="_blank" rel="noopener">Hakone Ropeway</a></h3>
+<p>Cable car strung over a live volcanic valley</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=%C5%8Cwakudani%20Hakone" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Ōwakudani" src="guide-img/hakone-02.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2a7f7a">Nature &amp; Mountain</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=%C5%8Cwakudani%20Hakone" target="_blank" rel="noopener">Ōwakudani</a></h3>
+<p>Sulphur vents and the famous black eggs</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Lake%20Ashi%20Hakone" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Lake Ashi" src="guide-img/hakone-03.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2a7f7a">Nature &amp; Mountain</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Lake%20Ashi%20Hakone" target="_blank" rel="noopener">Lake Ashi</a></h3>
+<p>Crater lake with sightseeing boats and Fuji views</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Hakone%20Shrine%20Hakone" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Hakone Shrine" src="guide-img/hakone-04.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Hakone%20Shrine%20Hakone" target="_blank" rel="noopener">Hakone Shrine</a></h3>
+<p>Vermilion torii standing in the lake</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Hakone%20Tozan%20Line%20Hakone" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Hakone Tozan Line" src="guide-img/hakone-05.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#1f7f9e">Scenic Ride</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Hakone%20Tozan%20Line%20Hakone" target="_blank" rel="noopener">Hakone Tozan Line</a></h3>
+<p>Switchback mountain railway up the gorge</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Hakone%20onsen%20ryokan" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Onsen ryokan" src="guide-img/hakone-06.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#c0557f">Onsen</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Hakone%20onsen%20ryokan" target="_blank" rel="noopener">Onsen ryokan</a></h3>
+<p>Hot-spring inn; look for private family baths</p>
+</figcaption></figure></div>
+</section>
+<section id="nikko" class="city">
+<header class="chead"><h2>Nikko</h2><span class="count">6 places</span></header>
+<div class="grid"><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Nikk%C5%8D%20T%C5%8Dsh%C5%8D-g%C5%AB%20Nikko" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Nikkō Tōshō-gū" src="guide-img/nikko-00.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Nikk%C5%8D%20T%C5%8Dsh%C5%8D-g%C5%AB%20Nikko" target="_blank" rel="noopener">Nikkō Tōshō-gū</a></h3>
+<p>Lavishly carved UNESCO shrine; the three monkeys</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Rinn%C5%8D-ji%20Nikko" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Rinnō-ji" src="guide-img/nikko-01.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Rinn%C5%8D-ji%20Nikko" target="_blank" rel="noopener">Rinnō-ji</a></h3>
+<p>Temple hall with three large gilded Buddhas</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Shinky%C5%8D%20Bridge%20Nikko" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Shinkyō Bridge" src="guide-img/nikko-02.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Shinky%C5%8D%20Bridge%20Nikko" target="_blank" rel="noopener">Shinkyō Bridge</a></h3>
+<p>Vermilion bridge over the Daiya river</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Kegon%20Falls%20Nikko" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Kegon Falls" src="guide-img/nikko-03.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2a7f7a">Nature &amp; Mountain</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Kegon%20Falls%20Nikko" target="_blank" rel="noopener">Kegon Falls</a></h3>
+<p>97 m waterfall with an elevator to the base</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Lake%20Ch%C5%ABzenji%20Nikko" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Lake Chūzenji" src="guide-img/nikko-04.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2a7f7a">Nature &amp; Mountain</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Lake%20Ch%C5%ABzenji%20Nikko" target="_blank" rel="noopener">Lake Chūzenji</a></h3>
+<p>Alpine lake at 1,269 m below Mt Nantai</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Irohazaka%20Nikko" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Irohazaka" src="guide-img/nikko-05.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#1f7f9e">Scenic Ride</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Irohazaka%20Nikko" target="_blank" rel="noopener">Irohazaka</a></h3>
+<p>48 hairpin bends climbing the valley</p>
+</figcaption></figure></div>
+</section>
+<section id="kamakura" class="city">
+<header class="chead"><h2>Kamakura</h2><span class="count">6 places</span></header>
+<div class="grid"><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Great%20Buddha%2C%20K%C5%8Dtoku-in%20Kamakura" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Great Buddha, Kōtoku-in" src="guide-img/kamakura-00.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Great%20Buddha%2C%20K%C5%8Dtoku-in%20Kamakura" target="_blank" rel="noopener">Great Buddha, Kōtoku-in</a></h3>
+<p>13.4 m bronze Buddha cast in 1252; you can step inside</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Hase-dera%20Kamakura" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Hase-dera" src="guide-img/kamakura-01.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Hase-dera%20Kamakura" target="_blank" rel="noopener">Hase-dera</a></h3>
+<p>Hillside temple with sea views and garden paths</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Tsurugaoka%20Hachimang%C5%AB%20Kamakura" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Tsurugaoka Hachimangū" src="guide-img/kamakura-02.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Tsurugaoka%20Hachimang%C5%AB%20Kamakura" target="_blank" rel="noopener">Tsurugaoka Hachimangū</a></h3>
+<p>Kamakura&#x27;s main shrine at the head of Komachi-dōri</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Enoden%20Line%20Kamakura" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Enoden Line" src="guide-img/kamakura-03.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#1f7f9e">Scenic Ride</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Enoden%20Line%20Kamakura" target="_blank" rel="noopener">Enoden Line</a></h3>
+<p>Vintage tram that runs along the coast</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Enoshima%20Kamakura" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Enoshima" src="guide-img/kamakura-04.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2a7f7a">Nature &amp; Mountain</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Enoshima%20Kamakura" target="_blank" rel="noopener">Enoshima</a></h3>
+<p>Island with shrines, sea caves and a lighthouse</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=H%C5%8Dkoku-ji%20Kamakura" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Hōkoku-ji" src="guide-img/kamakura-05.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#3f7d51">Garden &amp; Park</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=H%C5%8Dkoku-ji%20Kamakura" target="_blank" rel="noopener">Hōkoku-ji</a></h3>
+<p>Small bamboo grove with a tea house</p>
+</figcaption></figure></div>
+</section>
+<section id="nara" class="city">
+<header class="chead"><h2>Nara</h2><span class="count">5 places</span></header>
+<div class="grid"><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Nara%20Park%20Nara" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Nara Park" src="guide-img/nara-00.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#6b8f2a">Wildlife</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Nara%20Park%20Nara" target="_blank" rel="noopener">Nara Park</a></h3>
+<p>About 1,200 free-roaming deer and deer crackers</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=T%C5%8Ddai-ji%20Nara" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Tōdai-ji" src="guide-img/nara-01.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=T%C5%8Ddai-ji%20Nara" target="_blank" rel="noopener">Tōdai-ji</a></h3>
+<p>Great Buddha inside one of the largest wooden halls</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Kasuga-taisha%20Nara" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Kasuga-taisha" src="guide-img/nara-02.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Kasuga-taisha%20Nara" target="_blank" rel="noopener">Kasuga-taisha</a></h3>
+<p>Approach lined with thousands of stone lanterns</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Naramachi%20Nara" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Naramachi" src="guide-img/nara-03.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Naramachi%20Nara" target="_blank" rel="noopener">Naramachi</a></h3>
+<p>Lanes of preserved merchant townhouses</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Mount%20Wakakusa%20Nara" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Mount Wakakusa" src="guide-img/nara-04.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2a7f7a">Nature &amp; Mountain</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Mount%20Wakakusa%20Nara" target="_blank" rel="noopener">Mount Wakakusa</a></h3>
+<p>Grass hill with a view over the whole basin</p>
+</figcaption></figure></div>
+</section>
+<section id="osaka" class="city">
+<header class="chead"><h2>Osaka</h2><span class="count">7 places</span></header>
+<div class="grid"><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=D%C5%8Dtonbori%20Osaka" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Dōtonbori" src="guide-img/osaka-00.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=D%C5%8Dtonbori%20Osaka" target="_blank" rel="noopener">Dōtonbori</a></h3>
+<p>Neon canal, the Glico sign and street food</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Osaka%20Castle%20Osaka" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Osaka Castle" src="guide-img/osaka-01.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#7a6248">Castle &amp; Historic</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Osaka%20Castle%20Osaka" target="_blank" rel="noopener">Osaka Castle</a></h3>
+<p>Keep, moats and a large surrounding park</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Osaka%20Aquarium%20Kaiyukan%20Osaka" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Osaka Aquarium Kaiyukan" src="guide-img/osaka-02.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#6b8f2a">Wildlife</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Osaka%20Aquarium%20Kaiyukan%20Osaka" target="_blank" rel="noopener">Osaka Aquarium Kaiyukan</a></h3>
+<p>Whale sharks; among the largest aquariums in Asia</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Umeda%20Sky%20Building%20Osaka" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Umeda Sky Building" src="guide-img/osaka-03.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#4a54a8">Viewpoint &amp; Tower</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Umeda%20Sky%20Building%20Osaka" target="_blank" rel="noopener">Umeda Sky Building</a></h3>
+<p>Twin towers joined by a floating garden deck</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Shinsekai%20Osaka" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Shinsekai" src="guide-img/osaka-04.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Shinsekai%20Osaka" target="_blank" rel="noopener">Shinsekai</a></h3>
+<p>Retro district of kushikatsu bars and signage</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Ts%C5%ABtenkaku%20Osaka" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Tsūtenkaku" src="guide-img/osaka-05.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#4a54a8">Viewpoint &amp; Tower</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Ts%C5%ABtenkaku%20Osaka" target="_blank" rel="noopener">Tsūtenkaku</a></h3>
+<p>1912-style tower with a slide descent</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Den%20Den%20Town%20Osaka" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Den Den Town" src="guide-img/osaka-06.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Den%20Den%20Town%20Osaka" target="_blank" rel="noopener">Den Den Town</a></h3>
+<p>Osaka&#x27;s electronics and anime quarter</p>
+</figcaption></figure></div>
+</section>
+<section id="kanazawa" class="city">
+<header class="chead"><h2>Kanazawa</h2><span class="count">7 places</span></header>
+<div class="grid"><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Kenroku-en%20Kanazawa" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Kenroku-en" src="guide-img/kanazawa-00.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#3f7d51">Garden &amp; Park</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Kenroku-en%20Kanazawa" target="_blank" rel="noopener">Kenroku-en</a></h3>
+<p>One of Japan&#x27;s three great gardens; winter rope cones</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Kanazawa%20Castle%20Kanazawa" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Kanazawa Castle" src="guide-img/kanazawa-01.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#7a6248">Castle &amp; Historic</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Kanazawa%20Castle%20Kanazawa" target="_blank" rel="noopener">Kanazawa Castle</a></h3>
+<p>Reconstructed gates, turrets and long storehouse</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Higashi%20Chaya%20District%20Kanazawa" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Higashi Chaya District" src="guide-img/kanazawa-02.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Higashi%20Chaya%20District%20Kanazawa" target="_blank" rel="noopener">Higashi Chaya District</a></h3>
+<p>Preserved teahouse streets and gold-leaf shops</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Nagamachi%20Kanazawa" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Nagamachi" src="guide-img/kanazawa-03.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Nagamachi%20Kanazawa" target="_blank" rel="noopener">Nagamachi</a></h3>
+<p>Earthen-walled samurai lanes and the Nomura house</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=%C5%8Cmich%C5%8D%20Market%20Kanazawa" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Ōmichō Market" src="guide-img/kanazawa-04.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b57a1e">Market &amp; Food</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=%C5%8Cmich%C5%8D%20Market%20Kanazawa" target="_blank" rel="noopener">Ōmichō Market</a></h3>
+<p>Covered seafood and produce market since the Edo era</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=21st%20Century%20Museum%20Kanazawa" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="21st Century Museum" src="guide-img/kanazawa-05.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#6b4e9e">Museum &amp; Art</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=21st%20Century%20Museum%20Kanazawa" target="_blank" rel="noopener">21st Century Museum</a></h3>
+<p>Circular glass museum; Leandro Erlich&#x27;s pool</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Hakuichi%20gold%20leaf%20Kanazawa" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Gold-leaf workshop" src="guide-img/kanazawa-06.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#a2497f">Experience</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Hakuichi%20gold%20leaf%20Kanazawa" target="_blank" rel="noopener">Gold-leaf workshop</a></h3>
+<p>Apply kinpaku to your own box or chopsticks</p>
+</figcaption></figure></div>
+</section>
+<section id="takayama---shirakawa-go" class="city">
+<header class="chead"><h2>Takayama &amp; Shirakawa-go</h2><span class="count">6 places</span></header>
+<div class="grid"><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Sanmachi%20Suji%2C%20Takayama%20Gifu" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Sanmachi Suji, Takayama" src="guide-img/takayama---shirakawa-go-00.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#2f6fb0">City &amp; Street</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Sanmachi%20Suji%2C%20Takayama%20Gifu" target="_blank" rel="noopener">Sanmachi Suji, Takayama</a></h3>
+<p>Edo merchant streets with sake brewers</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Takayama%20Jin%27ya%20%26%20morning%20markets%20Gifu" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Takayama Jin&#x27;ya &amp; morning markets" src="guide-img/takayama---shirakawa-go-01.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b57a1e">Market &amp; Food</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Takayama%20Jin%27ya%20%26%20morning%20markets%20Gifu" target="_blank" rel="noopener">Takayama Jin&#x27;ya &amp; morning markets</a></h3>
+<p>Former governor&#x27;s office; riverside stalls each morning</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Hida%20Folk%20Village%20Gifu" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Hida Folk Village" src="guide-img/takayama---shirakawa-go-02.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#6b4e9e">Museum &amp; Art</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Hida%20Folk%20Village%20Gifu" target="_blank" rel="noopener">Hida Folk Village</a></h3>
+<p>Open-air museum of relocated farmhouses</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Shirakawa-g%C5%8D%20Gifu" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Shirakawa-gō" src="guide-img/takayama---shirakawa-go-03.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#7a6248">Castle &amp; Historic</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Shirakawa-g%C5%8D%20Gifu" target="_blank" rel="noopener">Shirakawa-gō</a></h3>
+<p>UNESCO thatched village; Shiroyama viewpoint</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Shirakawa-go" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Gasshō-zukuri houses" src="guide-img/takayama---shirakawa-go-04.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#7a6248">Castle &amp; Historic</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Shirakawa-go" target="_blank" rel="noopener">Gasshō-zukuri houses</a></h3>
+<p>Steep thatched roofs built to shed heavy snow</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Takayama%20Festival%20Floats%20Hall%20Gifu" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Takayama Festival Floats Hall" src="guide-img/takayama---shirakawa-go-05.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#6b4e9e">Museum &amp; Art</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Takayama%20Festival%20Floats%20Hall%20Gifu" target="_blank" rel="noopener">Takayama Festival Floats Hall</a></h3>
+<p>Ornate lacquered festival floats on display</p>
+</figcaption></figure></div>
+</section>
+<section id="nagano---around" class="city">
+<header class="chead"><h2>Nagano &amp; around</h2><span class="count">4 places</span></header>
+<div class="grid"><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Jigokudani%20Monkey%20Park%20Nagano" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Jigokudani Monkey Park" src="guide-img/nagano---around-00.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#6b8f2a">Wildlife</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Jigokudani%20Monkey%20Park%20Nagano" target="_blank" rel="noopener">Jigokudani Monkey Park</a></h3>
+<p>Wild macaques bathing in a hot spring pool</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Zenk%C5%8D-ji%20Nagano" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Zenkō-ji" src="guide-img/nagano---around-01.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#b23a48">Temple &amp; Shrine</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Zenk%C5%8D-ji%20Nagano" target="_blank" rel="noopener">Zenkō-ji</a></h3>
+<p>7th-century temple with a pitch-dark underground passage</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Shibu%20Onsen%20Nagano" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Shibu Onsen" src="guide-img/nagano---around-02.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#c0557f">Onsen</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Shibu%20Onsen%20Nagano" target="_blank" rel="noopener">Shibu Onsen</a></h3>
+<p>Nine-bath onsen village walked in yukata and geta</p>
+</figcaption></figure><figure class="card">
+<div class="ph"><a href="https://www.google.com/maps/search/?api=1&query=Matsumoto%20Castle%20Nagano" target="_blank" rel="noopener" title="Open in Google Maps"><img loading="lazy" alt="Matsumoto Castle" src="guide-img/nagano---around-03.jpg" onerror="this.parentNode.innerHTML='&lt;div class=noimg&gt;Open in Google Maps&lt;/div&gt;'"></a></div>
+<figcaption>
+<span class="badge" style="--bc:#7a6248">Castle &amp; Historic</span>
+<h3><a href="https://www.google.com/maps/search/?api=1&query=Matsumoto%20Castle%20Nagano" target="_blank" rel="noopener">Matsumoto Castle</a></h3>
+<p>Original black keep of 1594 with alpine backdrop</p>
+</figcaption></figure></div>
+</section>
+<details><summary>Photo credits</summary>
+<ul><li><b>Sensō-ji</b> — Sensoji_2023.jpg</li><li><b>Tokyo Skytree</b> — Tokyo_Skytree_2014_Ⅲ.jpg</li><li><b>Shibuya Sky</b> — Tokyo Tower and Skyscrapers from Shibuya Sky Observation Deck (53416648661).jpg</li><li><b>Shibuya Crossing</b> — Shibuya_Crossing,_Aerial.jpg</li><li><b>Takeshita Street, Harajuku</b> — JRE-Harajuku-Station-07.jpg</li><li><b>Meiji Shrine</b> — Meiji_Jingu_2023-3.jpg</li><li><b>Akihabara</b> — Sotokanda,_Akihabara_Electric_Town_at_night_20231114.png</li><li><b>Omoide Yokochō</b> — Shinjuku-West Omoide-Yokocho.jpg</li><li><b>Metropolitan Gov&#x27;t Observatory</b> — Tokyo_Metropolitan_Government_Building_2024.jpg</li><li><b>teamLab Borderless</b> — TeamLab Borderless, Odaiba, Tokyo, Japan (49070645226).jpg</li><li><b>teamLab Planets</b> — Photos at teamlab planets tokyo.jpg</li><li><b>Ghibli Museum</b> — Ghibli_Museum_2024.JPG</li><li><b>Ueno Park</b> — Ueno_park.jpg</li><li><b>Tokyo National Museum</b> — Tokyo_National_Museum,_Honkan_2010.jpg</li><li><b>National Museum of Nature and Science</b> — NMNC01s3200.jpg</li><li><b>Miraikan</b> — Miraikan.jpg</li><li><b>Odaiba</b> — Odaiba_close_up_-_2025_Jan_14_01-27PM.jpeg</li><li><b>Mount Takao</b> — Mount_Takao_20051023.jpg</li><li><b>Meiji Jingū Gaien</b> — Jingu_Gaien_Ginkgo_Street_in_Autumn_5.jpg</li><li><b>Rikugi-en</b> — Rikugien-10-2009-fujishirotoge02.jpg</li><li><b>Koishikawa Kōrakuen</b> — Koishikawa_Korakuen_060607.jpg</li><li><b>Tsukiji Outer Market</b> — Tsukiji Outer Market -04.jpg</li><li><b>Tokyo Tower</b> — Tokyo_Tower_2023.jpg</li><li><b>Zōjō-ji</b> — Zōjō-ji_20241021.jpg</li><li><b>Ginza</b> — Ginza-WAKO_at_night.jpg</li><li><b>Nihonbashi</b> — Chuo-dori_from_Nihonbashi.jpg</li><li><b>Yanaka</b> — Tokyo_-_Yanaka_143.jpg</li><li><b>Sumida Aquarium</b> — Magellanic Penguin (Spheniscus magellanicus) - GRB.JPG</li><li><b>Hakone Open-Air Museum</b> — Hakone5.jpg</li><li><b>Hakone Ropeway</b> — Hakone_ropeway_(cropped).jpg</li><li><b>Ōwakudani</b> — Owakudani_-_Hakone_(27369344357).jpg</li><li><b>Lake Ashi</b> — 260505_Moto-Hakone_Hakone_Japan01s3.jpg</li><li><b>Hakone Shrine</b> — Hakonejinja_-01.jpg</li><li><b>Hakone Tozan Line</b> — Hakonetozan-1002.JPG</li><li><b>Onsen ryokan</b> — Tamatsukuri_onsen_yado02s3648.jpg</li><li><b>Mount Fuji</b> — View_of_Mount_Fuji_from_Ōwakudani_20211202.jpg</li><li><b>Lake Kawaguchi</b> — Autumn leaf color and Mount Fuji from Lake Kawaguchi.jpg</li><li><b>Chūreitō Pagoda</b> — Chureito Pagoda and Mount Fuji 2023-03-07.jpg</li><li><b>Mt Fuji Panoramic Ropeway</b> — Mt Kachi Kachi Ropeway.jpg</li><li><b>Iyashi no Sato</b> — Aerial panorama of Mount Fuji with Saiko Iyashi-no-Sato Nenba in the foreground. June 2023.jpg</li><li><b>Nikkō Tōshō-gū</b> — 200801_Nikko_Tosho-gu_Nikko_Japan03s3.jpg</li><li><b>Rinnō-ji</b> — NikkoRinnoji5390.jpg</li><li><b>Shinkyō Bridge</b> — Shinkyo bridge of Nikko - January 2024.jpg</li><li><b>Kegon Falls</b> — Lake_chuzenji_and_kegon_waterfall.jpg</li><li><b>Lake Chūzenji</b> — Mount_nantai_and_lake_chuzenji.jpg</li><li><b>Irohazaka</b> — Irohazaka 01.jpg</li><li><b>Great Buddha, Kōtoku-in</b> — 230128_Kamakura_Daibutsu_Japan04s3.jpg</li><li><b>Hase-dera</b> — HasederaKannondo20120716.jpg</li><li><b>Tsurugaoka Hachimangū</b> — TsurugaokaHachiman-M8867.jpg</li><li><b>Enoden Line</b> — Enoden_300_series_Kamakura_Koko_mae_Station.jpg</li><li><b>Enoshima</b> — Fujisawa as seen from Enoshima Island 130809 7.jpg</li><li><b>Hōkoku-ji</b> — Bambu garden.jpg</li><li><b>Fushimi Inari-taisha</b> — Torii_path_with_lantern_at_Fushimi_Inari_Taisha_Shrine,_Kyoto,_Japan.jpg</li><li><b>Arashiyama Bamboo Grove</b> — Bamboo_Grove,_Arashiyama,_Kyoto,_Japan.jpg</li><li><b>Tenryū-ji</b> — Tenryuji_Kyoto.jpg</li><li><b>Togetsukyō Bridge</b> — Arashiyama,_Part_II_-_Arashiyama7534.jpg</li><li><b>Iwatayama Monkey Park</b> — Macaca fuscata Iwatayama.jpg</li><li><b>Kiyomizu-dera</b> — Kiyomizu.jpg</li><li><b>Sannenzaka &amp; Ninenzaka</b> — Sannenzaka_street,_Kyoto_(3811257874).jpg</li><li><b>Kinkaku-ji</b> — Golden_Pavilion_Kinkaku-ji_water_mirror_2024.jpg</li><li><b>Ginkaku-ji</b> — Ginkakuji_Kyoto03-r.jpg</li><li><b>Philosopher&#x27;s Path</b> — Japan_Kyoto_philosophers_walk_DSC00297.jpg</li><li><b>Nijō Castle</b> — NinomaruPalace.jpg</li><li><b>Nishiki Market</b> — Nishiki_Ichiba_by_matsuyuki.jpg</li><li><b>Gion</b> — 150124_Gion_Kyoto_Japan01s3.jpg</li><li><b>Pontochō</b> — Pontocho_by_Wolfiewolf_in_Nabeyacho,_Kyoto.jpg</li><li><b>Sanjūsangen-dō</b> — Sanjusangendo_2022.jpg</li><li><b>Tōfuku-ji</b> — TofukujiHondo.jpg</li><li><b>Sanzen-in, Ōhara</b> — Sanzen&#x27;in_01.JPG</li><li><b>Kurama-dera</b> — Kurama-dera_sanmon.jpg</li><li><b>Kifune Shrine</b> — Kifune-jinja_haiden.jpg</li><li><b>Shōjin ryōri</b> — Chinese-buddhist-cuisine-taiwan-1.jpg</li><li><b>Nara Park</b> — Sika deer in Nara Park, November 2016.jpg</li><li><b>Tōdai-ji</b> — Tōdai-ji_Kon-dō.jpg</li><li><b>Kasuga-taisha</b> — Kasuga-taisha11bs3200.jpg</li><li><b>Naramachi</b> — Naramachi Tenjin SouthGate.JPG</li><li><b>Mount Wakakusa</b> — WakakusaYama.jpg</li><li><b>Dōtonbori</b> — Osaka_Dotonbori_Ebisu_Bridge.jpg</li><li><b>Osaka Castle</b> — Osaka Castle, Tenshu (Keep) -2 (February 2011) - panoramio.jpg</li><li><b>Osaka Aquarium Kaiyukan</b> — Kaiyūkan.jpg</li><li><b>Umeda Sky Building</b> — 2018_Umeda_Sky_Building.jpg</li><li><b>Shinsekai</b> — Shinsekai_and_Tsutenkaku_at_night_2019-04-12.jpg</li><li><b>Tsūtenkaku</b> — New_Tsutenkaku,_Osaka.jpg</li><li><b>Den Den Town</b> — Nipponbashi_Osaka_Japan01-r.jpg</li><li><b>Kenroku-en</b> — Stone_lantern_Kenrokuen.jpg</li><li><b>Kanazawa Castle</b> — 131109_Kanazawa_Castle_Kanazawa_Ishikawa_pref_Japan01s5p.jpg</li><li><b>Higashi Chaya District</b> — Higashiyama Higashi Chaya District Kanazawa (29103739857).jpg</li><li><b>Nagamachi</b> — Nagamachi buke yashiki - samurai residence in Kanazawa - Flickr - odako1 (1).jpg</li><li><b>Ōmichō Market</b> — Omicho covered market western entrance, Kanazawa, 2016.jpg</li><li><b>21st Century Museum</b> — 21st_Century_Museum_of_Contemporary_Art,_Kanazawa011.jpg</li><li><b>Gold-leaf workshop</b> — Small_gold_nugget_5mm_dia_and_corresponding_foil_surface_of_half_sq_meter.jpg</li><li><b>Sanmachi Suji, Takayama</b> — Takayama&#x27;s_Early_Winter_Welcome_(NE).jpg</li><li><b>Takayama Jin&#x27;ya &amp; morning markets</b> — Takayama_jinya.jpg</li><li><b>Hida Folk Village</b> — Hida Folk Village - HidaFolkVillage6446.jpg</li><li><b>Shirakawa-gō</b> — Ogimachi Village-02.jpg</li><li><b>Gasshō-zukuri houses</b> — Shirakawago_Japanese_Old_Village_001.jpg</li><li><b>Takayama Festival Floats Hall</b> — Kagura_Tai_Float.jpg</li><li><b>Jigokudani Monkey Park</b> — Jigokudani hotspring in Nagano Japan 001.jpg</li><li><b>Zenkō-ji</b> — 160501_Zenkoji_Nagano_Japan06s3.jpg</li><li><b>Shibu Onsen</b> — Shibu Onsen, Yudanaka (6289612301).jpg</li><li><b>Matsumoto Castle</b> — Matsumoto_Castle_Keep_Tower.jpg</li><li><b>Ryōan-ji</b> &mdash; <a href="https://commons.wikimedia.org/wiki/File:RyoanJi-Dry_garden.jpg" target="_blank" rel="noopener">Stephane D&#x27;Alu</a>, CC BY-SA 3.0</li><li><b>Otagi Nenbutsu-ji</b> &mdash; <a href="https://commons.wikimedia.org/wiki/File:Rakan_statues_covered_in_moss_at_Otagi_Nenbutsu_temple.png" target="_blank" rel="noopener">Thomas Housieaux</a>, CC BY 4.0</li><li><b>Adashino Nenbutsu-ji</b> &mdash; <a href="https://commons.wikimedia.org/wiki/File:Adashino_nenbutsuji01s3200.jpg" target="_blank" rel="noopener">663highland</a>, CC BY-SA 4.0</li><li><b>Eikan-dō</b> &mdash; <a href="https://www.flickr.com/photos/74399113@N07/46146782912" target="_blank" rel="noopener">Patrick Vierthaler</a>, CC BY-NC 2.0</li><li><b>Yasaka Shrine</b> &mdash; <a href="https://www.flickr.com/photos/93125414@N00/30635112486" target="_blank" rel="noopener">Mark Abel</a>, CC BY-NC-SA 2.0</li><li><b>Sagano Romantic Train</b> &mdash; <a href="https://commons.wikimedia.org/wiki/File:Sagano_Romantic_Train.jpg" target="_blank" rel="noopener">Streetdeck</a>, CC BY-SA 4.0</li><li><b>Kyoto Station Skyway</b> &mdash; <a href="https://commons.wikimedia.org/wiki/File:Skyway_of_Kyoto_Station_Building_at_night_20260921b.jpg" target="_blank" rel="noopener">掬茶</a>, CC BY-SA 4.0</li><li><b>Kyoto Railway Museum</b> &mdash; <a href="https://commons.wikimedia.org/wiki/File:UMEKOJI_STEAM_LOCOMOTIVE_MUSEUM_ROUNDHOUSE_KYOTO_JAPAN_JUNE_2012_%287418852076%29.jpg" target="_blank" rel="noopener">calflier001</a>, CC BY-SA 2.0</li><li><b>Kurama Onsen</b> &mdash; <a href="https://www.flickr.com/photos/87838077@N00/3745486669" target="_blank" rel="noopener">ORAZ Studio</a>, CC BY-NC 2.0</li><li><b>NAKED meets Nijō Castle</b> &mdash; <a href="https://www.flickr.com/photos/21203533@N00/2535285476" target="_blank" rel="noopener">jimg944</a>, CC BY 2.0</li><li><b>Karamaru karakami workshop</b> &mdash; <a href="https://www.flickr.com/photos/67381643@N00/4227751613" target="_blank" rel="noopener">Yasuo Kida</a>, CC BY 2.0</li><li><b>Kimono walk</b> &mdash; <a href="https://www.flickr.com/photos/12663367@N00/15658613756" target="_blank" rel="noopener">*maya*</a>, CC BY-NC-SA 2.0</li><li><b>Kyūkyodō</b> &mdash; <a href="https://www.flickr.com/photos/72764592@N00/8908173178" target="_blank" rel="noopener">macglee</a>, CC BY-SA 2.0</li><li><b>Itoya Kyoto</b> &mdash; <a href="https://www.flickr.com/photos/90406908@N00/596694383" target="_blank" rel="noopener">youthkee</a>, CC BY-NC-ND 2.0</li><li><b>Kabukichō neon &amp; Godzilla</b> &mdash; <a href="https://commons.wikimedia.org/wiki/File:Kabukicho_red_gate_and_colorful_neon_street_signs_at_night%2C_Shinjuku%2C_Tokyo%2C_Japan.jpg" target="_blank" rel="noopener">Basile Morin</a>, CC BY-SA 4.0</li><li><b>Pokémon Center &amp; Nintendo Tokyo</b> &mdash; <a href="https://www.flickr.com/photos/24167650@N00/48001700033" target="_blank" rel="noopener">Dutch Blythe Fashion</a>, CC BY-NC-ND 2.0</li><li><b>G.Itoya</b> &mdash; <a href="https://www.flickr.com/photos/10297518@N00/36894324784" target="_blank" rel="noopener">¡Carlitos</a>, CC BY-NC-SA 2.0</li><li><b>Kakimori</b> &mdash; <a href="https://www.flickr.com/photos/39155920@N04/6896828789" target="_blank" rel="noopener">amespiphoto</a>, CC BY-NC-ND 2.0</li><li><b>Loft Shibuya</b> &mdash; <a href="https://www.flickr.com/photos/27917561@N00/2370284247" target="_blank" rel="noopener">jpellgen (@1179_jp)</a>, CC BY-NC-ND 2.0</li><li><b>Kappabashi</b> &mdash; <a href="https://commons.wikimedia.org/wiki/File:Cream_and_red_coffee_cup-shaped_balconies%2C_Niimi_Tableware%2C_Kappabashi_Dougu_Street%2C_Tokyo%2C_Japan.jpg" target="_blank" rel="noopener">Basile Morin</a>, CC BY-SA 4.0</li><li><b>Dawn Avatar Robot Café</b> &mdash; <a href="https://www.flickr.com/photos/36085842@N06/52114882066" target="_blank" rel="noopener">Ars Electronica</a>, CC BY-NC-ND 2.0</li><li><b>Kimono or samurai experience</b> &mdash; <a href="https://www.flickr.com/photos/35246361@N08/37146286696" target="_blank" rel="noopener">victorillen</a>, CC BY-NC-ND 2.0</li><li><b>Kōenji</b> &mdash; <a href="https://www.flickr.com/photos/88444437@N00/6843512416" target="_blank" rel="noopener">Danny Choo</a>, CC BY-SA 2.0</li><li><b>Momiji Kairo</b> &mdash; <a href="https://commons.wikimedia.org/wiki/File:Kawaguchiko%2C_Part_II_-_Kawaguchiko6811.jpg" target="_blank" rel="noopener">lumoplank</a>, CC0</li><li><b>Oshino Hakkai</b> &mdash; <a href="https://commons.wikimedia.org/wiki/File:Oshino_Hakkai_-_Oshino6878.jpg" target="_blank" rel="noopener">lumoplank</a>, CC0</li><li><b>Fuji-Q Highland</b> &mdash; <a href="https://commons.wikimedia.org/wiki/File:Fujiyama_2008_%282765653784%29.jpg" target="_blank" rel="noopener">scion_cho</a>, CC BY 2.0</li><li><b>Fuji Subaru Line 5th Station</b> &mdash; <a href="https://commons.wikimedia.org/wiki/File:Fuji_Subaru_Line_5th_Station%2C_Mount_Fuji_%2842361741530%29.jpg" target="_blank" rel="noopener">Fabio Achilli</a>, CC BY 2.0</li></ul>
+<p style="font-size:12px;color:var(--mut)">Original photos from Wikimedia Commons; added photos from Wikimedia Commons and Flickr under the Creative Commons licences shown.</p>
+</details>
+<footer>Built for the Nov&ndash;Dec 2026 family trip. Travel times are indicative and assume no service disruption.</footer>
+</div>
+</body></html>
