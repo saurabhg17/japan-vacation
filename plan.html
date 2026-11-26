@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Japan 2026 – Day plan</title>
+<style>
+:root{
+ --bg:#faf7f2; --panel:#ffffff; --ink:#1d1b19; --mut:#6d6760; --line:#e2dbd1;
+ --accent:#9c2b2b; --soft:#f3ece2; --ok:#2f6b45; --warn:#9a5b00;
+ --shadow:0 1px 2px rgba(0,0,0,.05),0 8px 24px rgba(0,0,0,.06);
+}
+@media (prefers-color-scheme:dark){:root{
+ --bg:#14130f; --panel:#1d1c18; --ink:#ece7df; --mut:#a09889; --line:#32302a;
+ --accent:#e0705f; --soft:#26231d; --ok:#7fc39a; --warn:#e2a64a;
+ --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.35);
+}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font:16px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+a{color:inherit}
+.tabs{position:sticky;top:0;z-index:30;display:flex;align-items:center;height:52px;padding:0 10px;background:var(--panel);border-bottom:1px solid var(--line)}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg a{text-decoration:none;font:600 14px/1 ui-sans-serif,-apple-system,sans-serif;padding:10px 10px;color:var(--mut)}
+.seg a.on{background:var(--ink);color:var(--bg)}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+h1,h2,h3{font-family:ui-serif,Georgia,"Times New Roman",serif;font-weight:600;letter-spacing:-.01em;margin:0}
+header.top{padding:28px 0 18px}
+.kick{font:600 12px/1 ui-sans-serif,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
+header.top h1{font-size:clamp(26px,6vw,38px);line-height:1.12}
+header.top p{color:var(--mut);margin:10px 0 0}
+.days{display:flex;gap:6px;overflow-x:auto;padding:4px 0 2px}
+.days a{white-space:nowrap;text-decoration:none;font-size:13.5px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);color:var(--mut)}
+.days a.on{background:var(--accent);border-color:var(--accent);color:#fff}
+section{margin:30px 0}
+h2{font-size:22px;margin-bottom:12px}
+.note{background:var(--soft);border-left:3px solid var(--accent);border-radius:6px;padding:10px 12px;font-size:14.5px;margin:12px 0}
+.note b{color:var(--accent)}
+ol.tl{list-style:none;margin:0;padding:0;position:relative}
+ol.tl:before{content:"";position:absolute;left:64px;top:6px;bottom:6px;width:2px;background:var(--line)}
+ol.tl li{display:grid;grid-template-columns:50px 1fr;gap:30px;padding:0 0 18px;position:relative}
+ol.tl li:before{content:"";position:absolute;left:59px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--panel);border:2px solid var(--accent)}
+ol.tl li.move:before{border-color:var(--mut);width:8px;height:8px;left:61px;top:8px}
+.tm{font-weight:700;font-variant-numeric:tabular-nums;font-size:14px;padding-top:1px}
+.what h3{font-size:17px;line-height:1.3}
+.what h3 a{text-decoration:none;border-bottom:1px solid var(--line)}
+.what p{margin:3px 0 0;color:var(--mut);font-size:14px}
+li.move .what{font-size:14px;color:var(--mut)}
+li.move .what b{color:var(--ink);font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 11px/1.2 ui-sans-serif,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);background:var(--soft)}
+tr:last-child td{border-bottom:0}
+.y{color:var(--warn);font-weight:700}
+.n{color:var(--ok);font-weight:700}
+.cards{display:grid;gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow)}
+.card h3{font-size:16.5px}
+.card h3 a{text-decoration:none;border-bottom:1px solid var(--line)}
+.card p{margin:4px 0 0;color:var(--mut);font-size:14px}
+.tag{display:inline-block;font:600 10.5px/1 ui-sans-serif,sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:4px 7px;border-radius:5px;border:1px solid var(--line);color:var(--mut);margin-left:6px;vertical-align:2px}
+.tag.top{color:var(--accent);border-color:var(--accent)}
+ul.check{padding-left:20px;margin:0}
+ul.check li{margin:0 0 6px}
+footer{border-top:1px solid var(--line);margin-top:30px;padding:18px 0 50px;color:var(--mut);font-size:13px}
+</style>
+</head>
+<body>
+<div class="tabs"><div class="seg"><a href="./#Kyoto">Kyoto</a><a href="./#Tokyo">Tokyo</a><a href="./#Fuji">Fuji</a><a href="guide.html">Guide</a><a class="on" href="plan.html">Plan</a></div></div>
+
+<div class="wrap">
+<header class="top">
+  <p class="kick">Kyoto &middot; Day plan</p>
+  <nav class="days"><a class="on" href="#thu26">Thu 26 Nov</a></nav>
+</header>
+
+<article id="thu26">
+<h1>Arashiyama, the Sagano train and Kinkaku-ji</h1>
+<p style="color:var(--mut);margin:8px 0 0">Start 10:30 from the hotel. Back at the hotel by about 20:30. Dry and sunny, high around 13&deg;C, so bring a warm layer for the open train and the evening.</p>
+
+<div class="note"><b>Before you leave:</b> book or check the Sagano train (see Trains below). Carry cash: the Tenryu-ji garden fee and the train counter do not take cards. Shigetsu shojin lunch is closed on Thursdays, so lunch is at a vegetarian cafe instead.</div>
+
+<section>
+<h2>Timeline</h2>
+<ol class="tl">
+  <li class="move"><span class="tm">10:30</span><div class="what"><b>Hotel to Kyoto Station</b> (walk ~15 min to JR platforms 31–33, west end), then <b>JR Sagano line</b> to Saga-Arashiyama, ~15 min. Tap Suica/ICOCA.</div></li>
+  <li><span class="tm">11:10</span><div class="what"><h3><a href="https://www.google.com/maps/search/?api=1&query=Tenryu-ji%20Kyoto" target="_blank" rel="noopener">Tenryu-ji garden</a></h3><p>Sogen pond garden, ~45 min. ¥500 cash. Leave by the north gate.</p></div></li>
+  <li><span class="tm">11:50</span><div class="what"><h3><a href="https://www.google.com/maps/search/?api=1&query=Arashiyama%20Bamboo%20Grove" target="_blank" rel="noopener">Bamboo Grove</a></h3><p>The north gate opens straight onto it. 30 min. Busy at this hour; keep moving and photograph from the side paths.</p></div></li>
+  <li><span class="tm">12:30</span><div class="what"><h3>Vegetarian lunch</h3><p>Pick one from the lunch list below. All are within 10 min of the station.</p></div></li>
+  <li class="move"><span class="tm">13:45</span><div class="what"><b>Torokko Saga station</b>, next to JR Saga-Arashiyama. Be there 15 min early.</div></li>
+  <li><span class="tm">14:02</span><div class="what"><h3><a href="https://www.google.com/maps/search/?api=1&query=Torokko%20Saga%20Station" target="_blank" rel="noopener">Sagano Romantic Train</a></h3><p>Saga to Kameoka, arrive 14:25. Sit on the river side. The 13:02 also works if you are early.</p></div></li>
+  <li class="move"><span class="tm">14:30</span><div class="what"><b>Walk ~10 min to JR Umahori</b>, local train to <b>Enmachi</b> (~20 min), then <b>taxi ~10 min</b> to Kinkaku-ji.</div></li>
+  <li><span class="tm">15:30</span><div class="what"><h3><a href="https://www.google.com/maps/search/?api=1&query=Kinkaku-ji" target="_blank" rel="noopener">Kinkaku-ji</a></h3><p>The pond view of the Golden Pavilion. Crowds thin after 15:30 and the low sun lights the gold. Open 09:00–17:00, ~1 h.</p></div></li>
+  <li class="move"><span class="tm">16:45</span><div class="what"><b>Taxi to Kyoto Station</b>, ~30 min in evening traffic.</div></li>
+  <li><span class="tm">17:15</span><div class="what"><h3>Dinner at Kyoto Station</h3><p>Restaurant floors in the station building and Porta underground. Use the dietary card.</p></div></li>
+  <li><span class="tm">18:45</span><div class="what"><h3><a href="https://www.google.com/maps/search/?api=1&query=To-ji%20Temple%20Kyoto" target="_blank" rel="noopener">To-ji autumn light-up</a></h3><p>Five-storey pagoda and maples lit up and reflected in the pond. 18:00–21:30, last entry 21:00. ¥1,000 adults, ¥500 children. ~15 min walk or a short taxi from the station; ~20 min walk back to the hotel.</p></div></li>
+</ol>
+</section>
+
+<section>
+<h2>Trains</h2>
+<table>
+  <tr><th>Leg</th><th>Book?</th><th>When it runs</th></tr>
+  <tr><td><b>JR Sagano line</b><br>Kyoto &rarr; Saga-Arashiyama</td><td class="n">No</td><td>Every 10–20 min, ~15 min ride, ~¥240. Tap Suica/ICOCA.</td></tr>
+  <tr><td><b>Sagano Romantic Train</b><br>Torokko Saga &rarr; Kameoka</td><td class="y">Yes</td><td>Hourly at :02 from Saga, 09:02 to 16:02 (plus some evening runs). 25 min. Reserved seats.</td></tr>
+  <tr><td><b>JR Sagano line</b><br>Umahori &rarr; Enmachi</td><td class="n">No</td><td>Local trains about 3 an hour, ~20 min. Rapid trains skip Umahori.</td></tr>
+  <tr><td><b>Taxi</b><br>Enmachi &rarr; Kinkaku-ji</td><td class="n">No</td><td>~10 min. One standard taxi fits four. GO app or the rank.</td></tr>
+</table>
+<div class="note"><b>Sagano tickets:</b> buy e-tickets on the official site (sagano-kanko.co.jp). If online is sold out, the Torokko Saga counter sells same-day tickets first-come, first-served from about 08:35, cash or IC card only. After seats sell out they sell a limited number of standing tickets. If nothing is left, skip the train and take a taxi from Arashiyama straight to Kinkaku-ji (~25 min), adding Ryoan-ji next door.</div>
+</section>
+
+<section>
+<h2>Lunch in Arashiyama (vegetarian)</h2>
+<div class="cards">
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Musubi%20Cafe%20Arashiyama" target="_blank" rel="noopener">Musubi Cafe</a><span class="tag top">Best for the family</span></h3><p>Labelled vegetarian lunch plate; also serves meat for the kids. Short walk from the JR station.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Saga%20Tofu%20Ine%20Arashiyama" target="_blank" rel="noopener">Saga Tofu Ine</a></h3><p>Tofu set meals with vegan items marked on the menu. Near the Tenryu-ji gate.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Ms%20Bento%20Arashiyama" target="_blank" rel="noopener">Ms Bento</a></h3><p>Vegan, two dishes only (curry or sushi bento). By Saga-Arashiyama station. Cash only.</p></div>
+</div>
+<p style="color:var(--mut);font-size:13.5px">Check today's hours in Google Maps before walking over.</p>
+</section>
+
+<section>
+<h2>Evening options</h2>
+<div class="cards">
+  <div class="card"><h3>To-ji light-up<span class="tag top">Pick</span></h3><p>Closest to the hotel and another pond-and-pagoda view. In the timeline above.</p></div>
+  <div class="card"><h3>Kyoto Station Skyway and shops</h3><p>Free glass walkway on the top floor, plus Isetan and Porta. Easy if the kids are tired.</p></div>
+  <div class="card"><h3>Pontocho, Kiyamachi and the Shijo arcades</h3><p>Lantern-lit alley by the river, and the covered Teramachi and Shinkyogoku shopping streets, open into the evening. 10 min by taxi from the station.</p></div>
+  <div class="card"><h3>Kiyomizu-dera light-up</h3><p>Runs to 30 Nov, until 21:30. Better kept for Friday's kimono day in Higashiyama.</p></div>
+</div>
+<div class="note"><b>Night markets:</b> Kyoto has no evening street markets like a pasar malam. Nishiki Market is daytime and most stalls close by early evening. For evening shopping use the Shijo arcades or Kyoto Station.</div>
+</section>
+</article>
+
+<footer>Hours, prices and train times checked 26 Nov 2026. Times are a guide; days are free and easy.</footer>
+</div>
+</body>
+</html>
