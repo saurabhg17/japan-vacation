@@ -20,7 +20,8 @@ html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);
  font:16px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
 a{color:inherit}
-.tabs{position:sticky;top:0;z-index:30;display:flex;align-items:center;height:52px;padding:0 10px;background:var(--panel);border-bottom:1px solid var(--line)}
+.tabs{position:sticky;top:0;z-index:30;display:flex;align-items:center;height:52px;padding:0 10px;background:var(--panel);border-bottom:1px solid var(--line);overflow-x:auto}
+@media (max-width:460px){.seg a{padding:10px 7px;font-size:13px}}
 .seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
 .seg a{text-decoration:none;font:600 14px/1 ui-sans-serif,-apple-system,sans-serif;padding:10px 10px;color:var(--mut)}
 .seg a.on{background:var(--ink);color:var(--bg)}
@@ -67,7 +68,7 @@ footer{border-top:1px solid var(--line);margin-top:30px;padding:18px 0 50px;colo
 </style>
 </head>
 <body>
-<div class="tabs"><div class="seg"><a href="./#Kyoto">Kyoto</a><a href="./#Tokyo">Tokyo</a><a href="./#Fuji">Fuji</a><a href="guide.html">Guide</a><a class="on" href="plan.html">Plan</a></div></div>
+<div class="tabs"><div class="seg"><a href="./#Kyoto">Kyoto</a><a href="./#Tokyo">Tokyo</a><a href="./#Fuji">Fuji</a><a href="guide.html">Guide</a><a class="on" href="plan.html">Plan</a><a href="options.html">Options</a></div></div>
 
 <div class="wrap">
 <header class="top">

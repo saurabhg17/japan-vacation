@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Japan 2026 – Tokyo &amp; Fuji options</title>
+<style>
+:root{
+ --bg:#faf7f2; --panel:#ffffff; --ink:#1d1b19; --mut:#6d6760; --line:#e2dbd1;
+ --accent:#9c2b2b; --soft:#f3ece2; --ok:#2f6b45; --warn:#9a5b00;
+ --shadow:0 1px 2px rgba(0,0,0,.05),0 8px 24px rgba(0,0,0,.06);
+}
+@media (prefers-color-scheme:dark){:root{
+ --bg:#14130f; --panel:#1d1c18; --ink:#ece7df; --mut:#a09889; --line:#32302a;
+ --accent:#e0705f; --soft:#26231d; --ok:#7fc39a; --warn:#e2a64a;
+ --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.35);
+}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font:16px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+a{color:inherit}
+.tabs{position:sticky;top:0;z-index:30;display:flex;align-items:center;height:52px;padding:0 10px;background:var(--panel);border-bottom:1px solid var(--line);overflow-x:auto}
+@media (max-width:460px){.seg a{padding:10px 7px;font-size:13px}}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;flex:none}
+.seg a{text-decoration:none;font:600 14px/1 ui-sans-serif,-apple-system,sans-serif;padding:10px 10px;color:var(--mut);white-space:nowrap}
+.seg a.on{background:var(--ink);color:var(--bg)}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+h1,h2,h3{font-family:ui-serif,Georgia,"Times New Roman",serif;font-weight:600;letter-spacing:-.01em;margin:0}
+header.top{padding:28px 0 10px}
+.kick{font:600 12px/1 ui-sans-serif,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
+header.top h1{font-size:clamp(26px,6vw,38px);line-height:1.12}
+header.top p{color:var(--mut);margin:10px 0 0}
+.jump{display:flex;gap:6px;overflow-x:auto;padding:12px 0 2px}
+.jump a{white-space:nowrap;text-decoration:none;font-size:13.5px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);color:var(--mut)}
+section{margin:30px 0;scroll-margin-top:64px}
+h2{font-size:22px;margin-bottom:4px}
+.sub{color:var(--mut);font-size:14px;margin:0 0 12px}
+.note{background:var(--soft);border-left:3px solid var(--accent);border-radius:6px;padding:10px 12px;font-size:14.5px;margin:12px 0}
+.note b{color:var(--accent)}
+.note ul{margin:6px 0 0;padding-left:18px}.note li{margin:0 0 4px}
+.cards{display:grid;gap:10px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow)}
+.card h3{font-size:16.5px;line-height:1.3}
+.card h3 a{text-decoration:none;border-bottom:1px solid var(--line)}
+.card p{margin:4px 0 0;color:var(--mut);font-size:14px}
+.tag{display:inline-block;font:600 10.5px/1 ui-sans-serif,sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:4px 7px;border-radius:5px;border:1px solid var(--line);color:var(--mut);margin:0 0 0 6px;vertical-align:2px}
+.tag.today{color:var(--ok);border-color:var(--ok)}
+.tag.book{color:var(--warn);border-color:var(--warn)}
+.tag.top{color:var(--accent);border-color:var(--accent)}
+table{width:100%;border-collapse:collapse;font-size:14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 11px/1.2 ui-sans-serif,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);background:var(--soft)}
+tr:last-child td{border-bottom:0}
+footer{border-top:1px solid var(--line);margin-top:30px;padding:18px 0 50px;color:var(--mut);font-size:13px}
+</style>
+</head>
+<body>
+<div class="tabs"><div class="seg"><a href="./#Kyoto">Kyoto</a><a href="./#Tokyo">Tokyo</a><a href="./#Fuji">Fuji</a><a href="guide.html">Guide</a><a href="plan.html">Plan</a><a class="on" href="options.html">Options</a></div></div>
+
+<div class="wrap">
+<header class="top">
+  <p class="kick">Tokyo &middot; Mt Fuji &middot; Sat 28 Nov &ndash; Tue 1 Dec</p>
+  <h1>Tokyo and Fuji options</h1>
+  <p>Places to pick from, not a schedule. Tap a name to open it in Google Maps. <span class="tag today">Today</span> marks places that work on Saturday after check-in.</p>
+  <nav class="jump"><a href="#basics">Basics</a><a href="#walk">Walk from hotel</a><a href="#ride">Short ride</a><a href="#east">East Tokyo</a><a href="#fuji">Mt Fuji</a><a href="#tours">Tours</a></nav>
+</header>
+
+<section id="basics">
+<h2>Basics</h2>
+<div class="note">
+<ul>
+<li><b>Getting to the hotel:</b> Shinagawa &rarr; JR Yamanote to Shinjuku (~20 min). Use the <b>East Exit</b>, go through the red Kabukicho Ichibangai arch and walk to the Godzilla-head tower. 5&ndash;10 min on foot. No taxi needed.</li>
+<li><b>Sunset:</b> about 16:28 from 28 Nov to 1 Dec. Dark by about 17:00, so do gardens and outdoor views before then.</li>
+<li><b>Closed days:</b> Shinjuku Gyoen, Kakimori and Pigment close on Monday, and so do the Ueno museums. Kappabashi closes on Sunday.</li>
+<li><b>Fuji:</b> the best day is <b>Mon 30 Nov</b>. It is a weekday and the forecast is clear (&minus;2 to 13&deg;C). See <a href="#fuji">Mt Fuji</a>.</li>
+</ul>
+</div>
+</section>
+
+<section id="walk">
+<h2>Walk from the hotel (Shinjuku)</h2>
+<p class="sub">All within about 15 min on foot.</p>
+<div class="cards">
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Kabukicho%20Ichibangai" target="_blank" rel="noopener">Kabukicho neon and the Godzilla head</a><span class="tag today">Today</span></h3><p>Best after dark. The hotel's 8F Godzilla terrace is reported closed for now, so see the head from the street.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Omoide%20Yokocho%20Shinjuku" target="_blank" rel="noopener">Omoide Yokocho</a><span class="tag today">Today</span></h3><p>Lantern-lit alleys by the station, good for a walk-through and photos. The food is mostly yakitori, so not for the adults to eat.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Shinjuku%20Golden%20Gai" target="_blank" rel="noopener">Golden Gai</a><span class="tag today">Today</span></h3><p>Six lanes of tiny bars, about 6 min from the hotel. Worth a walk for the atmosphere. Many bars charge a seat fee.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Tokyo%20Metropolitan%20Government%20Building%20South%20Observatory" target="_blank" rel="noopener">TMG Observatory (South)</a><span class="tag today">Today</span><span class="tag top">Free</span></h3><p>202 m view. South deck open 09:30&ndash;22:00, last entry 30 min before closing. You may see Fuji's outline at sunset on a clear day. A free light show is projected on the building's front in the evening. ~15 min walk west.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Shinjuku%20Gyoen%20National%20Garden" target="_blank" rel="noopener">Shinjuku Gyoen</a></h3><p>Big garden with autumn maples. 09:00&ndash;16:30, last entry 16:00. <b>Closed Mondays.</b> ¥500 adults, ¥250 high-school students, free for 15 and under. Best Sunday morning; today only if you go straight after check-in.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Sekaido%20Shinjuku%20Main%20Store" target="_blank" rel="noopener">Sekaido main store</a><span class="tag today">Today</span></h3><p>Art supplies and stationery over five floors, discounted prices. 09:30&ndash;20:00. Near Shinjuku-sanchome.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Loft%20Shinjuku%20Sanchome" target="_blank" rel="noopener">Shinjuku Sanchome Loft</a><span class="tag today">Today</span></h3><p>Large stationery and lifestyle floor, about 3 min from Sekaido. Do the two together.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Hands%20Shinjuku%20Takashimaya%20Times%20Square" target="_blank" rel="noopener">Hands Shinjuku (Takashimaya Times Square)</a><span class="tag today">Today</span></h3><p>Gadgets, stationery and DIY across several floors. 10:00&ndash;21:00. By the South Exit.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Kinokuniya%20Shinjuku%20Main%20Store" target="_blank" rel="noopener">Kinokuniya main store</a><span class="tag today">Today</span></h3><p>Big bookshop on the east side, with stationery and English books.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Yodobashi%20Camera%20Shinjuku%20West" target="_blank" rel="noopener">Yodobashi Camera (West Exit)</a><span class="tag today">Today</span></h3><p>Cameras, lenses and electronics across several buildings. Bring passports for tax-free.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Isetan%20Shinjuku" target="_blank" rel="noopener">Isetan food hall (B1)</a><span class="tag today">Today</span></h3><p>Department-store food hall with sweets, bento and gifts. Good for a quick dinner or snacks.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Don%20Quijote%20Shinjuku%20Kabukicho" target="_blank" rel="noopener">Don Quijote Kabukicho</a><span class="tag today">Today</span></h3><p>Late-night souvenirs and snacks, close to the hotel.</p></div>
+</div>
+</section>
+
+<section id="ride">
+<h2>Short ride (10&ndash;20 min)</h2>
+<div class="cards">
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Shibuya%20Scramble%20Crossing" target="_blank" rel="noopener">Shibuya Crossing</a><span class="tag today">Today</span></h3><p>Best in the evening. Yamanote from Shinjuku, 7 min.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=SHIBUYA%20SKY" target="_blank" rel="noopener">Shibuya Sky</a><span class="tag book">Book</span></h3><p>Open-air rooftop. Timed tickets, and sunset slots sell out, so try a slot after dark.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Shibuya%20Loft" target="_blank" rel="noopener">Loft Shibuya</a></h3><p>Stationery and lifestyle goods. Hands Shibuya was due to close in Nov 2026, so don't plan on it.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Takeshita%20Street" target="_blank" rel="noopener">Harajuku: Takeshita Street and Omotesando</a><span class="tag today">Today</span></h3><p>Street fashion and crepes. Very crowded at weekends. One stop from Shinjuku.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Meiji%20Jingu" target="_blank" rel="noopener">Meiji Jingu</a></h3><p>Forest shrine next to Harajuku. Best in the morning. Pairs with Harajuku and Shinjuku Gyoen.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Rikugien%20Gardens%20Somei%20Gate" target="_blank" rel="noopener">Rikugien autumn illumination</a><span class="tag today">Today</span><span class="tag top">Peak now</span></h3><p>25 Nov&ndash;6 Dec, 18:00&ndash;20:30, last entry 19:30. Enter by the Somei Gate, 2 min from Komagome station (~15&ndash;20 min from Shinjuku). Tokyo maples peak around 29 Nov. Busy at weekends.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Koenji%20Station" target="_blank" rel="noopener">Koenji</a></h3><p>Vintage shops and a local feel. 6 min from Shinjuku on the JR Chuo line.</p></div>
+</div>
+</section>
+
+<section id="east">
+<h2>East Tokyo (half day or more)</h2>
+<div class="cards">
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Senso-ji" target="_blank" rel="noopener">Senso-ji, Asakusa</a></h3><p>Tokyo's oldest temple and Nakamise street. Go before 09:00 to avoid crowds.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=kimono%20rental%20Asakusa" target="_blank" rel="noopener">Kimono or samurai experience</a><span class="tag book">Book</span></h3><p>In Asakusa. Book once you pick the day.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Kappabashi%20Dougu%20Street" target="_blank" rel="noopener">Kappabashi</a></h3><p>Kitchenware street, including knives and plastic food samples. <b>Closed Sundays.</b> 10 min from Asakusa.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Kakimori%20Kuramae" target="_blank" rel="noopener">Kakimori</a></h3><p>Make your own notebook. <b>Closed Mondays.</b> Near Asakusa.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Ueno%20Park" target="_blank" rel="noopener">Ueno Park and museums</a></h3><p>Park, zoo and national museums. <b>Museums closed Mondays.</b></p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Akihabara%20Radio%20Kaikan" target="_blank" rel="noopener">Akihabara</a></h3><p>Electronics, parts shops, anime and arcades.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Avatar%20Robot%20Cafe%20DAWN" target="_blank" rel="noopener">Dawn Avatar Robot Cafe</a><span class="tag book">Book</span></h3><p>Café with robot waiters operated remotely by people with disabilities. Booking needed for robot-served seats. Nihonbashi.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=teamLab%20Planets%20TOKYO" target="_blank" rel="noopener">teamLab Planets</a><span class="tag book">Book</span></h3><p>Immersive digital art; you walk barefoot through water. Timed tickets. Toyosu.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=PIGMENT%20TOKYO" target="_blank" rel="noopener">Pigment Tokyo</a></h3><p>Shop with a wall of pigments and traditional art supplies. <b>Closed Mondays.</b> Tennozu.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=G.Itoya%20Ginza" target="_blank" rel="noopener">G.Itoya Ginza</a></h3><p>Twelve-floor stationery shop. Ginza is also good for an evening walk.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Mount%20Takao" target="_blank" rel="noopener">Mount Takao</a></h3><p>Easy mountain with a cable car and autumn colour, ~50 min from Shinjuku. Takes a full day, so it competes with Fuji.</p></div>
+</div>
+</section>
+
+<section id="fuji">
+<h2>Mt Fuji and Lake Kawaguchiko (full day)</h2>
+<p class="sub">Day trip from Shinjuku. Best day: Mon 30 Nov. Fuji is usually clearest early in the day, so leave early.</p>
+<table>
+  <tr><th>Option</th><th>Time / cost</th><th>Notes</th></tr>
+  <tr><td><b>Fuji Excursion train</b><br>Shinjuku &rarr; Kawaguchiko</td><td>~1 h 53 &middot; ¥4,130 one way</td><td>Direct, 3&ndash;4 a day, reserved seats only. Book on JR East's site. Stops at Shimoyoshida (Chureito Pagoda).</td></tr>
+  <tr><td><b>Highway bus</b><br>Busta Shinjuku (South Exit)</td><td>~1 h 45 &middot; ¥2,200</td><td>About 29 a day. Cheaper but can be slowed by traffic. Good for the return trip.</td></tr>
+  <tr><td><b>Guided bus tour</b><br>meets in West Shinjuku</td><td>~10 h &middot; ~US$64&ndash;125 pp</td><td>Covers Chureito, Oshino Hakkai and the lake with no planning, but you get fixed timings and short stops.</td></tr>
+</table>
+<div class="cards" style="margin-top:12px">
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Chureito%20Pagoda%2C%20Fujiyoshida" target="_blank" rel="noopener">Chureito Pagoda</a><span class="tag top">Classic view</span></h3><p>The famous pagoda-and-Fuji view, ~400 steps up. Go in the morning.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Oishi%20Park%20Fujikawaguchiko" target="_blank" rel="noopener">Oishi Park</a></h3><p>North-shore park with Fuji across the lake. Take the sightseeing bus from Kawaguchiko station.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Mt.%20Fuji%20Panoramic%20Ropeway" target="_blank" rel="noopener">Mt Fuji Panoramic Ropeway</a></h3><p>Short cable car to a viewpoint over the lake and Fuji. Near Kawaguchiko station.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Lake%20Kawaguchi%20sightseeing%20boat" target="_blank" rel="noopener">Lake Kawaguchi cruise</a></h3><p>About 20 min on the water. Easy with kids.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Oshino%20Hakkai" target="_blank" rel="noopener">Oshino Hakkai</a></h3><p>Village with clear spring ponds. Worth it even if Fuji is in cloud. Separate bus from Kawaguchiko.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Momiji%20Kairo%20Kawaguchiko" target="_blank" rel="noopener">Momiji Kairo (Maple Corridor)</a></h3><p>The festival ended 29 Nov and the leaves are likely past their best. Stop only if you pass by.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Fuji-Q%20Highland" target="_blank" rel="noopener">Fuji-Q Highland</a></h3><p>Big theme park with roller coasters. It replaces the sightseeing loop rather than adding to it.</p></div>
+  <div class="card"><h3><a href="https://www.google.com/maps/search/?api=1&query=Fuji%20Subaru%20Line%205th%20Station" target="_blank" rel="noopener">Fuji 5th Station</a></h3><p>Don't plan around it. The road may close for snow and ice from late November.</p></div>
+</div>
+<div class="note"><b>Stay overnight at Kawaguchiko?</b> Not for this trip. The forecast for Monday is clear, so a day trip leaving early will very likely see Fuji. An overnight stay would mean cancelling or wasting a Gracery night, moving bags twice, and booking a Fuji-view ryokan at short notice. Ryokan dinners would also need a vegetarian request in advance. It is only worth it for a sunrise view, an onsen evening, or a second chance if the first day clouds over.</div>
+</section>
+
+<section id="tours">
+<h2>Tours</h2>
+<div class="cards">
+  <div class="card"><h3>Sky Hop Bus (hop-on hop-off)<span class="tag">Skip</span></h3><p>Three routes: Red (Asakusa/Skytree), Blue (Tokyo Tower/Ginza) and Green (Shinjuku/Shibuya). From ~¥3,800 per adult. The open top is cold after dark, it is slow in traffic, and the trains reach the same places faster.</p></div>
+  <div class="card"><h3>Guided Fuji bus tour<span class="tag top">Consider</span></h3><p>The one tour worth paying for, because the Fuji sights are spread out. See the table above.</p></div>
+</div>
+</section>
+
+<footer>Options compiled 28 Nov 2026. Opening hours, prices and the forecast were checked that day; confirm on the day in Google Maps.</footer>
+</div>
+</body>
+</html>
